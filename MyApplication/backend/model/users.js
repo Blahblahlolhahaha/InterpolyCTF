@@ -11,8 +11,8 @@ const login = async(user,password)=>{
 
 const register = async(user,password)=>{
     const hash  = crypto.createHash("sha512").update(password).digest();
-    const query = "INSERT INTO users(username,password,saved_passwords) VALUES(?,?,?)"
-    const [results,fields] = await dbConn.query(query,[user,hash,""]);
+    const query = "INSERT INTO users(username,password) VALUES(?,?)";
+    const [results,fields] = await dbConn.query(query,[user,hash]);
     return results;
 }
 

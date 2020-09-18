@@ -3,4 +3,11 @@
     <string name="register">Register</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
+    <string name="password">Password:</string>
+    <string name="confirm">Confirm:</string>
+    <string name="numbah_1_in_security">Numbah 1 in Security!</string>
+    <string name="welcome_to_da_nnumbah_1_in_security">Welcome to da \nNUMBAH 1 IN SECURITY!</string>
+    <string name="password_title">Passwords</string>
+    <string name="antivirus">Antivirus</string>
+    <string name="my_account">My Account</string>
 </resources>

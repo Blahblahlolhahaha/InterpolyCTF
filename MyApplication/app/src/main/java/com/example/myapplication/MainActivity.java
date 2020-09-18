@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.example.myapplication.fragments.WelcomeFragment;
 import com.example.myapplication.workers.CookieBoi;
 
 import java.net.URI;

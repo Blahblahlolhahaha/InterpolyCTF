@@ -46,6 +46,7 @@ public class ContainerFragment extends Fragment {
             }
         });
         if(savedInstanceState == null){
+
             PasswordFragment passwordFragment = new PasswordFragment();
             fragmentTransaction(passwordFragment);
         }
@@ -53,6 +54,6 @@ public class ContainerFragment extends Fragment {
     private void fragmentTransaction(Fragment fragment){
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment,fragment).commit();
+        fragmentTransaction.replace(R.id.child,fragment).commit();
     }
 }

@@ -14,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.PasswordAdapter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class PasswordFragment extends Fragment {
     @Nullable
     @Override
@@ -24,9 +29,17 @@ public class PasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView passwords = view.findViewById(R.id.recyclerview);
-        passwords.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        PasswordAdapter passwordAdapter = new PasswordAdapter(null);
+        passwords.setLayoutManager(linearLayoutManager);
+        passwords.setHasFixedSize(true);
+        List<Map<String,Object>> test = new ArrayList<>();
+        Map<String,Object> testmap = new HashMap<>();
+        testmap.put("url","localhost");
+        testmap.put("username","yes");
+        test.add(testmap);
+        PasswordAdapter passwordAdapter = new PasswordAdapter(test);
         passwords.setAdapter(passwordAdapter);
+
+
     }
 }

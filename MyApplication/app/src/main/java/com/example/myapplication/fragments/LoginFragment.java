@@ -25,8 +25,10 @@ import com.example.myapplication.workers.YeetRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.net.URLDecoder;
 import java.util.Objects;
 
 public class LoginFragment extends Fragment {
@@ -52,7 +54,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view){
                 try {
-                    url = "http://192.168.43.134:3000/login";
+                    url = "http://192.168.60.134:3000/login";
                     username = usernameEditText.getText().toString();
                     password = passwordEditText.getText().toString();
                     if(username.equals("")){
@@ -72,13 +74,14 @@ public class LoginFragment extends Fragment {
                             }
                             else{
                                 Log.i(LOG_TAG,"Login Successful! User info: " + response.toString());
-                                String cookieString = response.getString("cookie");
+                                String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
                                 HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
                                 CookieBoi cookieBoi = new CookieBoi(getContext());
                                 cookieBoi.add(URI.create(url),cookie);
-                                Toast.makeText(getContext(),cookieString,Toast.LENGTH_SHORT).show();
+                                ContainerFragment containerFragment = new ContainerFragment();
+                                fragmentTransaction(containerFragment);
                             }
-                        } catch (JSONException e) {
+                        } catch (JSONException | UnsupportedEncodingException e) {
                             Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
                         }
                     }, error -> {
@@ -99,10 +102,13 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 RegisterFragment registerFragment = new RegisterFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment,registerFragment);
+                fragmentTransaction(registerFragment);
             }
         });
+    }
+    private void fragmentTransaction(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment,fragment).commit();
     }
 }

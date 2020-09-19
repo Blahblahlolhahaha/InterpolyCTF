@@ -4,14 +4,15 @@ const crypto = require("crypto");
 const { Buffer } = require("buffer");
 
 const initPw = async(username)=>{
-    const sql = "INSERT INTO passwords(username) VALUES(?)"
-    const [results,fields] = await dbConn.query(sql,[username]);
+    const sql = "INSERT INTO passwords(username,passwords) VALUES(?)"
+    const [results,fields] = await dbConn.query(sql,[username,""]);
     return results;
 };
 
 const getPw = async(username)=>{
     const sql = "SELECT * FROM passwords WHERE username=?"
     const [results,fields] = await dbConn.query(sql,[username]);
+    console.log(results);
     return results
 };
 
@@ -22,7 +23,7 @@ const updatePw = async(username,password)=>{
 };
 
 module.exports = {
-    initPw = initPw,
-    getPw = getPw,
-    updatePw = updatePw
+    initPw:initPw,
+    getPw:getPw,
+    updatePw:updatePw
 };

@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
+import com.android.volley.toolbox.Volley;
 import com.example.myapplication.errors.EmptyError;
 import com.example.myapplication.R;
 import com.example.myapplication.workers.CookieBoi;
@@ -52,7 +53,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view){
                 try {
-                    url = "http://192.168.43.134:3000/register";
+                    url = "http://192.168.60.134:3000/register";
                     username = usernameEditText.getText().toString();
                     password = passwordEditText.getText().toString();
                     confirm = confirmEditText.getText().toString();
@@ -80,6 +81,8 @@ public class RegisterFragment extends Fragment {
                                 HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
                                 CookieBoi cookieBoi = new CookieBoi(getContext());
                                 cookieBoi.add(URI.create(url),cookie);
+                                ContainerFragment containerFragment = new ContainerFragment();
+                                fragmentTransaction(containerFragment);
                             }
                         } catch (JSONException e) {
                             Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
@@ -88,6 +91,7 @@ public class RegisterFragment extends Fragment {
                         Log.e(LOG_TAG, Objects.requireNonNull(error.getMessage()));
                         Toast.makeText(getContext(),"An error occurred!",Toast.LENGTH_SHORT).show();
                     });
+                    Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
                 } catch (JSONException e) {
                     Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
                 }catch (Exception e){
@@ -101,10 +105,13 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 LoginFragment loginFragment = new LoginFragment();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.fragment,loginFragment);
+                fragmentTransaction(loginFragment);
             }
         });
+    }
+    private void fragmentTransaction(Fragment fragment){
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment,fragment).commit();
     }
 }

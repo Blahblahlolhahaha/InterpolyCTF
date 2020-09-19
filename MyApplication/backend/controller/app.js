@@ -22,6 +22,7 @@ app.post("/login",async(req,res)=>{
             res.status(200).cookie("token",JSON.stringify({"username":username}),{maxAge:2147483647}).send({"message":"yes"});
         }
     }catch(error){
+        console.log(error)
         res.status(500).send({"message":"Internal Server Error"});
     }
     
@@ -35,15 +36,17 @@ app.post("/register",async(req,res)=>{
         await passwords.initPw(username);
         res.status(200).cookie("token",JSON.stringify({"username":username}),{maxAge:2147483647}).send({"message":"yes"});
     }catch(error){
+        console.log(error)
         res.status(500).send({"message":"Internal Server Error"});
     }
 })
 
 app.get("/password",async(req,res)=>{
     try{
+        console.log(req.cookies);
         const username = req.body.username;
-        const results = passwords.getPw(username);
-        res.status(200).send({"password":results[0]});
+        const results = await passwords.getPw("yes");
+        res.status(200).send({"password":results[0].password==null?"":results[0].password});
     }catch(error){
         res.status(500).send({"message":"Internal Server Error"});
     }

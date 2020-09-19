@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WelcomeFragment welcomeFragment;
 
-    private final String DEFAULT_URL = "http://192.168.43.134:3000";
+    private final String DEFAULT_URL = "http://192.168.60.134:3000";
 
     private URI defaultUri = URI.create(DEFAULT_URL);
 

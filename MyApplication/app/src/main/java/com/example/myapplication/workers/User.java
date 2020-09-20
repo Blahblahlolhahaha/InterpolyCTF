@@ -30,7 +30,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class User {
-    private String username,masterpassword;
+    private String username;
     private byte[] passwordBytes;
     private List<Map<String,Object>> passwordList;
     private byte[] ivBytes = {109,28,46,59,12,-65,87,34,65,21,-86,-45,85,65,26,34};
@@ -40,15 +40,31 @@ public class User {
     private Cipher cipher;
 
     private IvParameterSpec iv = new IvParameterSpec(ivBytes);
-    public User(String username, String masterpassword, String passwordBase64) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, IllegalBlockSizeException, ClassNotFoundException, InvalidAlgorithmParameterException, IOException {
+
+    public User(String username,String masterPassword, List<Map<String,Object>> passwordList) throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.username = username;
-        this.masterpassword = masterpassword;
+        md = MessageDigest.getInstance("SHA-256");
+        keyBytes = md.digest(masterPassword.getBytes());
+        key = new SecretKeySpec(keyBytes,"AES");
+        cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
+    };
+
+    public User(String username, String masterPassword, String passwordBase64) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, IllegalBlockSizeException, ClassNotFoundException, InvalidAlgorithmParameterException, IOException {
+        this.username = username;
         passwordBytes = Base64.decode(passwordBase64,0);
         md = MessageDigest.getInstance("SHA-256");
-        keyBytes = md.digest(masterpassword.getBytes());
+        keyBytes = md.digest(masterPassword.getBytes());
         key = new SecretKeySpec(keyBytes,"AES");
         cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
         passwordList = decryptPassword();
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public List<Map<String, Object>> getPasswordList() {
+        return passwordList;
     }
 
     public String addPassword(Map<String,Object>newPassword) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
@@ -79,8 +95,7 @@ public class User {
         byte[] plaintext = baos.toByteArray();
         cipher.init(Cipher.ENCRYPT_MODE,key,iv);
         byte[] encrypted = cipher.doFinal(plaintext);
-        String base64String = Base64.encodeToString(encrypted,0);
-        return base64String;
+        return Base64.encodeToString(encrypted,0);
     }
 
 }

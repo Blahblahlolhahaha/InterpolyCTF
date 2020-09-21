@@ -30,7 +30,7 @@ public class ContainerFragment extends Fragment {
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
                     case (R.id.password):
-                        PasswordFragment passwordFragment = new PasswordFragment();
+                        PasswordFragment passwordFragment = new PasswordFragment(null);
                         fragmentTransaction(passwordFragment);
                         break;
                     case(R.id.antivirus):
@@ -46,8 +46,7 @@ public class ContainerFragment extends Fragment {
             }
         });
         if(savedInstanceState == null){
-
-            PasswordFragment passwordFragment = new PasswordFragment();
+            PasswordFragment passwordFragment = new PasswordFragment(null);
             fragmentTransaction(passwordFragment);
         }
     }

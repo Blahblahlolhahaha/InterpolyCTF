@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View view){
                 try {
-                    url = "http://192.168.60.134:3000/login";
+                    url = "http://192.168.43.134:3000/login";
                     username = usernameEditText.getText().toString();
                     password = passwordEditText.getText().toString();
                     if(username.equals("")){

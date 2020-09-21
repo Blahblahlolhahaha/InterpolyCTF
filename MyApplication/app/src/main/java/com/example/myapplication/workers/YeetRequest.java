@@ -33,10 +33,10 @@ public class YeetRequest extends JsonObjectRequest {
     /**
      * Custom class!
      */
-    public void setCookies(List<String> cookies) {
+    public void setCookies(List<HttpCookie> cookies) {
         StringBuilder sb = new StringBuilder();
-        for (String cookie : cookies) {
-            sb.append(cookie).append("; ");
+        for (HttpCookie cookie : cookies) {
+            sb.append(cookie.toString()).append("; ");
         }
         headers.put("Cookie", sb.toString());
     }

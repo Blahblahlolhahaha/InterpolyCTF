@@ -17,7 +17,7 @@ const getPw = async(username)=>{
 };
 
 const updatePw = async(username,password)=>{
-    const sql = "UPDATE passwords SET password=? WHERE username=?"
+    const sql = "UPDATE passwords SET passwords=? WHERE username=?"
     const [results,fields] = await dbConn.query(sql,[password,username]);
     return results;
 };

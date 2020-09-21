@@ -43,6 +43,7 @@ public class User {
 
     public User(String username,String masterPassword, List<Map<String,Object>> passwordList) throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.username = username;
+        this.passwordList = passwordList;
         md = MessageDigest.getInstance("SHA-256");
         keyBytes = md.digest(masterPassword.getBytes());
         key = new SecretKeySpec(keyBytes,"AES");
@@ -77,6 +78,16 @@ public class User {
         return encryptAndConvertToBase64();
     }
 
+    public String encryptAndConvertToBase64() throws IOException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(passwordList);
+        byte[] plaintext = baos.toByteArray();
+        cipher.init(Cipher.ENCRYPT_MODE,key,iv);
+        byte[] encrypted = cipher.doFinal(plaintext);
+        return Base64.encodeToString(encrypted,0);
+    }
+
     private List<Map<String,Object>> decryptPassword() throws InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException, ClassNotFoundException {
         cipher.init(Cipher.DECRYPT_MODE,key,iv);
         byte[] decodedBytes = cipher.doFinal(passwordBytes);
@@ -88,14 +99,6 @@ public class User {
         return passwords;
     }
 
-    private String encryptAndConvertToBase64() throws IOException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(baos);
-        oos.writeObject(passwordList);
-        byte[] plaintext = baos.toByteArray();
-        cipher.init(Cipher.ENCRYPT_MODE,key,iv);
-        byte[] encrypted = cipher.doFinal(plaintext);
-        return Base64.encodeToString(encrypted,0);
-    }
+
 
 }

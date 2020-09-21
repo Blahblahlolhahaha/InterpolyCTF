@@ -46,19 +46,21 @@ app.get("/password",async(req,res)=>{
         console.log(req.cookies);
         const username = req.body.username;
         const results = await passwords.getPw("yes");
-        res.status(200).send({"password":results[0].password==null?"":results[0].password});
+        res.status(200).send({"password":results[0].passwords==null?"":results[0].passwords});
     }catch(error){
+        console.log(error);
         res.status(500).send({"message":"Internal Server Error"});
     }
 })
 
 app.post("/password",async(req,res)=>{
     try{
-        const username = req.body.password;
+        const username = req.body.username;
         const password = req.body.password;
         await passwords.updatePw(username,password);
         res.status(200).send({"message":"yes"});
     }catch(error){
+        console.log(error);
         res.status(500).send({"message":"Internal Server Error"});
     }
 })

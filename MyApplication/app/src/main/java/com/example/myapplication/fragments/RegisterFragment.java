@@ -53,7 +53,7 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view){
                 try {
-                    url = "http://192.168.60.134:3000/register";
+                    url = "http://192.168.43.134:3000/register";
                     username = usernameEditText.getText().toString();
                     password = passwordEditText.getText().toString();
                     confirm = confirmEditText.getText().toString();

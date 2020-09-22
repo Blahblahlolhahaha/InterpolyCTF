@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -16,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +51,7 @@ public class PasswordFragment extends Fragment {
     private final String url = "http://192.168.43.134:3000/password";
     private final String LOG_TAG = "NUMBAH 1: ";
     private User user;
+    private Button add;
     public PasswordFragment(@Nullable User user){
         this.user = user;
     }
@@ -178,5 +182,12 @@ public class PasswordFragment extends Fragment {
             jsonObjectRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
             Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
         }
+        add = view.findViewById(R.id.add_password);
+        add.setOnClickListener(view1 -> {
+            EditFragment editFragment = new EditFragment(user);
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.child,editFragment);
+        });
     }
 }

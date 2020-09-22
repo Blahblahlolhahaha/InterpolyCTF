@@ -60,12 +60,21 @@ public class PasswordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if(user != null){
-            RecyclerView passwords = view.findViewById(R.id.recyclerview);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-            passwords.setLayoutManager(linearLayoutManager);
-            passwords.setHasFixedSize(true);
-            PasswordAdapter passwordAdapter = new PasswordAdapter(user.getPasswordList());
-            passwords.setAdapter(passwordAdapter);
+            YeetRequest jsonObjectRequest = new YeetRequest(JsonObjectRequest.Method.GET,url,null, response -> {
+                try {
+                    user.replacePasswordList(response.getString("password"));
+                    RecyclerView passwords = view.findViewById(R.id.recyclerview);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+                    passwords.setLayoutManager(linearLayoutManager);
+                    passwords.setHasFixedSize(true);
+                    PasswordAdapter passwordAdapter = new PasswordAdapter(user);
+                    passwords.setAdapter(passwordAdapter);
+
+                } catch (BadPaddingException | InvalidKeyException | IllegalBlockSizeException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }, Throwable::printStackTrace);
+            Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
         }
         else{
             YeetRequest jsonObjectRequest = new YeetRequest(JsonObjectRequest.Method.GET,url,null, response -> {
@@ -106,7 +115,7 @@ public class PasswordFragment extends Fragment {
                                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                                         passwords.setLayoutManager(linearLayoutManager);
                                         passwords.setHasFixedSize(true);
-                                        PasswordAdapter passwordAdapter = new PasswordAdapter(user.getPasswordList());
+                                        PasswordAdapter passwordAdapter = new PasswordAdapter(user);
                                         passwords.setAdapter(passwordAdapter);
                                         dialogInterface.dismiss();
                                     }, error -> {
@@ -139,7 +148,7 @@ public class PasswordFragment extends Fragment {
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                                 passwords.setLayoutManager(linearLayoutManager);
                                 passwords.setHasFixedSize(true);
-                                PasswordAdapter passwordAdapter = new PasswordAdapter(user.getPasswordList());
+                                PasswordAdapter passwordAdapter = new PasswordAdapter(user);
                                 passwords.setAdapter(passwordAdapter);
                                 dialogInterface.dismiss();
                             } catch (NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException e) {

@@ -73,9 +73,19 @@ public class User {
         return encryptAndConvertToBase64();
     }
 
+    public String replacePassword(int postition,Map<String,Object>newPassword) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
+        passwordList.add(postition, newPassword);
+        return encryptAndConvertToBase64();
+    }
+
     public String remove(int pos) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
         passwordList.remove(pos);
         return encryptAndConvertToBase64();
+    }
+
+    public void replacePasswordList (String encrypted) throws BadPaddingException, InvalidKeyException, IllegalBlockSizeException, ClassNotFoundException, InvalidAlgorithmParameterException, IOException {
+        passwordBytes = Base64.decode(encrypted,0);
+        passwordList = decryptPassword();
     }
 
     public String encryptAndConvertToBase64() throws IOException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {

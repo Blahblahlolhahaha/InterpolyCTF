@@ -6,11 +6,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.fragments.EditFragment;
+import com.example.myapplication.workers.Password;
+import com.example.myapplication.workers.User;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,9 +25,11 @@ import java.util.Map;
 
 public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>{
     private List<Map<String,Object>> password_collection;
+    private User user;
+    public PasswordAdapter(User user1){
+        user = user1;
+        password_collection = user.getPasswordList();
 
-    public PasswordAdapter(List<Map<String,Object>> list){
-        password_collection = list;
     }
     @NonNull
     @Override
@@ -32,13 +41,20 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.Passwo
 
     @Override
     public void onBindViewHolder(@NonNull PasswordViewHolder holder, int position) {
-
-        TextView url = holder.cardView.findViewById(R.id.url);
-        TextView username = holder.cardView.findViewById(R.id.username);
-        url.setText((String) password_collection.get(position).get("url"));
-        username.setText((String) password_collection.get(position).get("username"));
+        TextView urlView = holder.cardView.findViewById(R.id.url);
+        TextView usernameView = holder.cardView.findViewById(R.id.username);
+        String url = (String) password_collection.get(position).get("url");
+        String usename = (String) password_collection.get(position).get("username");
+        String password = (String) password_collection.get(position).get("password");
+        urlView.setText(url);
+        usernameView.setText(usename);
         holder.cardView.setOnClickListener(view -> {
-
+            Password password1 = new Password(url,usename,password,position);
+            AppCompatActivity activity = (AppCompatActivity) view.getContext();
+            EditFragment editFragment = new EditFragment(user,password1);
+            FragmentManager fragmentManager  = activity.getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.child,editFragment);
         });
     }
 

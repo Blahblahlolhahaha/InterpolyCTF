@@ -6,4 +6,6 @@
     <color name="white">#FFFFFF</color>
     <color name="transparent">#00000000</color>
     <color name="dark_white">#AAAAAA</color>
+    <color name="green">#32CD32</color>
+    <color name="orange">#FF7F50</color>
 </resources>

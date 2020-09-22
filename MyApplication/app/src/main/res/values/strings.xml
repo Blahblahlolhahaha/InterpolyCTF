@@ -11,4 +11,5 @@
     <string name="antivirus">Antivirus</string>
     <string name="my_account">My Account</string>
     <string name="save">Save</string>
+    <string name="delete">delete</string>
 </resources>

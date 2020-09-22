@@ -99,17 +99,27 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:gravity="bottom|right"
-        android:orientation="horizontal"
-        android:paddingVertical="8dp">
+        android:orientation="horizontal">
         <Button
             android:id="@+id/cancel"
-            android:layout_width="80dp"
+            android:layout_width="80"
             android:layout_height="40dp"
             android:text="Cancel"
             android:textAlignment="center"
             android:gravity="center"
-            android:textSize="20sp"
+            android:textSize="15sp"
+            android:background="@color/white"
             android:textColor="@color/green"/>
+        <Button
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="@string/delete"
+            android:textAlignment="center"
+            android:gravity="center"
+            android:textSize="15sp"
+            android:textColor="@color/green"
+            android:background="@color/white" />
         <Button
             android:id="@+id/save"
             android:layout_width="80dp"
@@ -117,8 +127,9 @@
             android:text="@string/save"
             android:textAlignment="center"
             android:gravity="center"
-            android:textSize="20sp"
-            android:textColor="@color/green"/>
+            android:textSize="15sp"
+            android:textColor="@color/green"
+            android:background="@color/white"/>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 

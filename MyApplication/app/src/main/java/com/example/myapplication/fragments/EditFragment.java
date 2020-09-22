@@ -52,7 +52,7 @@ public class EditFragment extends Fragment {
     private User user;
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
-    private Button cancel,save;
+    private Button cancel,delete,save;
     private final String LOG_TAG = "NUMBAH 1: ";
     public EditFragment(User user){
         this.user = user;
@@ -83,6 +83,7 @@ public class EditFragment extends Fragment {
         copyPassword = view.findViewById(R.id.copy_password);
         cancel = view.findViewById(R.id.cancel);
         save = view.findViewById(R.id.save);
+        delete = view.findViewById(R.id.delete);
         ClipboardManager clipboard = (ClipboardManager)
                 getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
         if(passwordItem != null){
@@ -90,6 +91,7 @@ public class EditFragment extends Fragment {
             urlEditText.setText(passwordItem.getUrl());
             username.setText(passwordItem.getUsername());
             password.setText(passwordItem.getPassword());
+            delete.setVisibility(View.GONE);
         }
         launch.setOnClickListener(view1 -> {
             String reeee = urlEditText.getText().toString();
@@ -148,8 +150,30 @@ public class EditFragment extends Fragment {
             cancel.setOnClickListener(view2 -> {
                 goBack();
             });
+            delete.setOnClickListener(view2 -> {
+                try {
+                    String encrypted = user.remove(passwordItem.getPosition());
+                    JSONObject details = new JSONObject();
+                    String url =  "http://192.168.43.134/password";
+                    details.put("username",username);
+                    details.put("password",encrypted);
+                    YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,url,details, response1 -> {
+                        try {
+                            Log.i(LOG_TAG,response1.toString(4));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }, error -> {
+                        error.printStackTrace();
+                        Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
+                    });
+                    yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create("url")));
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
+                    e.printStackTrace();
+                }
+            });
         });
-
     }
     private void goBack(){
         PasswordFragment passwordFragment = new PasswordFragment(user);

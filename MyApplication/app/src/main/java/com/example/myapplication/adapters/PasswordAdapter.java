@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.EditFragment;
 import com.example.myapplication.workers.Password;
 import com.example.myapplication.workers.User;
@@ -26,8 +27,10 @@ import java.util.Map;
 public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.PasswordViewHolder>{
     private List<Map<String,Object>> password_collection;
     private User user;
-    public PasswordAdapter(User user1){
+    private ContainerFragment containerFragment;
+    public PasswordAdapter(User user1,ContainerFragment containerFragment1){
         user = user1;
+        containerFragment = containerFragment1;
         password_collection = user.getPasswordList();
 
     }
@@ -50,11 +53,10 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.Passwo
         usernameView.setText(usename);
         holder.cardView.setOnClickListener(view -> {
             Password password1 = new Password(url,usename,password,position);
-            AppCompatActivity activity = (AppCompatActivity) view.getContext();
             EditFragment editFragment = new EditFragment(user,password1);
-            FragmentManager fragmentManager  = activity.getSupportFragmentManager();
+            FragmentManager fragmentManager  = containerFragment.getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.child,editFragment);
+            fragmentTransaction.replace(R.id.child,editFragment).commit();
         });
     }
 

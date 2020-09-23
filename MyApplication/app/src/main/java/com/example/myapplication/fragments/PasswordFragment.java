@@ -71,7 +71,7 @@ public class PasswordFragment extends Fragment {
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                     passwords.setLayoutManager(linearLayoutManager);
                     passwords.setHasFixedSize(true);
-                    PasswordAdapter passwordAdapter = new PasswordAdapter(user);
+                    PasswordAdapter passwordAdapter = new PasswordAdapter(user,(ContainerFragment) getParentFragment());
                     passwords.setAdapter(passwordAdapter);
 
                 } catch (BadPaddingException | InvalidKeyException | IllegalBlockSizeException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException e) {
@@ -109,7 +109,7 @@ public class PasswordFragment extends Fragment {
                                 CookieBoi cookieBoi = new CookieBoi(getContext());
                                 try {
                                     String username =  new JSONObject(cookieBoi.get(URI.create(url)).get(0).getValue()).getString("username");
-                                    User user = new User(username,passwordText,passwordList);
+                                    user = new User(username,passwordText,passwordList);
                                     String encrypted = user.encryptAndConvertToBase64();
                                     JSONObject details = new JSONObject();
                                     details.put("username",user.getUsername());
@@ -119,7 +119,7 @@ public class PasswordFragment extends Fragment {
                                         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                                         passwords.setLayoutManager(linearLayoutManager);
                                         passwords.setHasFixedSize(true);
-                                        PasswordAdapter passwordAdapter = new PasswordAdapter(user);
+                                        PasswordAdapter passwordAdapter = new PasswordAdapter(user, (ContainerFragment) getParentFragment());
                                         passwords.setAdapter(passwordAdapter);
                                         dialogInterface.dismiss();
                                     }, error -> {
@@ -147,12 +147,12 @@ public class PasswordFragment extends Fragment {
                         builder.setPositiveButton("Ok", (dialogInterface, i) -> {
                             String masterPassword = editText.getText().toString();
                             try {
-                                User user = new User(username,masterPassword,response.getString("password"));
+                                user = new User(username,masterPassword,response.getString("password"));
                                 RecyclerView passwords = view.findViewById(R.id.recyclerview);
                                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                                 passwords.setLayoutManager(linearLayoutManager);
                                 passwords.setHasFixedSize(true);
-                                PasswordAdapter passwordAdapter = new PasswordAdapter(user);
+                                PasswordAdapter passwordAdapter = new PasswordAdapter(user, (ContainerFragment) getParentFragment());
                                 passwords.setAdapter(passwordAdapter);
                                 dialogInterface.dismiss();
                             } catch (NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | BadPaddingException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException e) {
@@ -185,9 +185,9 @@ public class PasswordFragment extends Fragment {
         add = view.findViewById(R.id.add_password);
         add.setOnClickListener(view1 -> {
             EditFragment editFragment = new EditFragment(user);
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.child,editFragment);
+            fragmentTransaction.replace(R.id.child,editFragment).commit();
         });
     }
 }

@@ -57,6 +57,7 @@ app.post("/password",async(req,res)=>{
     try{
         const username = req.body.username;
         const password = req.body.password;
+        console.log(req.body)
         await passwords.updatePw(username,password);
         res.status(200).send({"message":"yes"});
     }catch(error){

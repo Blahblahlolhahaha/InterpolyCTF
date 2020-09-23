@@ -74,7 +74,7 @@ public class User {
     }
 
     public String replacePassword(int postition,Map<String,Object>newPassword) throws IOException, InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException {
-        passwordList.add(postition, newPassword);
+        passwordList.set(postition,newPassword);
         return encryptAndConvertToBase64();
     }
 

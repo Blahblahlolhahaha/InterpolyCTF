@@ -101,8 +101,8 @@
         android:gravity="bottom|right"
         android:orientation="horizontal">
         <Button
-            android:id="@+id/cancel"
-            android:layout_width="80"
+            android:id="@+id/cancell"
+            android:layout_width="80dp"
             android:layout_height="40dp"
             android:text="Cancel"
             android:textAlignment="center"

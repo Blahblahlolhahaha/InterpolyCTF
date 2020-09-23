@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 
+import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.WelcomeFragment;
 import com.example.myapplication.workers.CookieBoi;
 
@@ -17,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WelcomeFragment welcomeFragment;
 
-    private final String DEFAULT_URL = "http://192.168.60.134:3000";
+    private final String DEFAULT_URL = "http://192.168.43.134:3000";
 
     private URI defaultUri = URI.create(DEFAULT_URL);
 
@@ -30,7 +31,10 @@ public class MainActivity extends AppCompatActivity {
             welcomeFragment = new WelcomeFragment();
             fragmentTransaction(welcomeFragment);
         }
-
+        else{
+            ContainerFragment containerFragment = new ContainerFragment();
+            fragmentTransaction(containerFragment);
+        }
     }
 
     private void fragmentTransaction(Fragment fragment){

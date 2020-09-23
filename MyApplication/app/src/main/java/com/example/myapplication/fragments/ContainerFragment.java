@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,6 +18,8 @@ import com.example.myapplication.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ContainerFragment extends Fragment {
+    private BottomNavigationView navBar;
+    private FrameLayout frameLayout;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -24,7 +28,8 @@ public class ContainerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        BottomNavigationView navBar = view.findViewById(R.id.nav_bar);
+        navBar = view.findViewById(R.id.nav_bar);
+        frameLayout = view.findViewById(R.id.child);
         navBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -51,8 +56,17 @@ public class ContainerFragment extends Fragment {
         }
     }
     private void fragmentTransaction(Fragment fragment){
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.child,fragment).commit();
+    }
+
+    protected void hideNaviBar(){
+        navBar.setVisibility(View.GONE);
+        frameLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+    protected void showNaviBar(){
+        navBar.setVisibility(View.VISIBLE);
+        frameLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 1000));
     }
 }

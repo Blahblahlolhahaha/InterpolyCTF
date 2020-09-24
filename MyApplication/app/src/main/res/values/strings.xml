@@ -12,4 +12,6 @@
     <string name="my_account">My Account</string>
     <string name="save">Save</string>
     <string name="delete">delete</string>
+    <string name="yes">You have scanned your device before T.T!</string>
+    <string name="yess">Your last scan was on</string>
 </resources>

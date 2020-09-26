@@ -34,6 +34,7 @@ public class AntivirusFragment extends Fragment {
             lastScan.setText(String.format("%s%s", getString(R.string.yess), date));
         }
         button.setOnClickListener(view1 -> {
+
         });
     }
 }

@@ -11,8 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.myapplication.R;
+import com.example.myapplication.workers.AntivirusWorker;
 
 public class AntivirusFragment extends Fragment {
     Button button;
@@ -34,7 +37,8 @@ public class AntivirusFragment extends Fragment {
             lastScan.setText(String.format("%s%s", getString(R.string.yess), date));
         }
         button.setOnClickListener(view1 -> {
-
+            WorkManager workManager = WorkManager.getInstance(getContext());
+            workManager.enqueue(new OneTimeWorkRequest.Builder(AntivirusWorker.class).build());
         });
     }
 }

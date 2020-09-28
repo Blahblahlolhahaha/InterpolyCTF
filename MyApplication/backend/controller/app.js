@@ -3,7 +3,9 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const users = require("../model/users");
 const passwords = require("../model/passwords");
+const letters = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM1234567890!@#$%^&*?".split("");
 const app = express();
+
 
 
 app.use(bodyParser.urlencoded({extended:false}));
@@ -66,5 +68,18 @@ app.post("/password",async(req,res)=>{
     }
 })
 
+app.post("/hash",async(req,res)=>{
+    console.log(req.body);
+    res.status(200).send({"malware":false});
+})
+
+app.get("/hash",async(req,res)=>{
+    console.log("yes")
+    let yes = "";
+    for(i= 0;i<32;i++){
+        yes += letters[Math.floor( Math.random()*letters.length)];
+    }
+    res.status(200).send({"key":yes});
+})
 
 module.exports = app;

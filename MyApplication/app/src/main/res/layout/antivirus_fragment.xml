@@ -16,6 +16,14 @@
         android:textSize="22sp"
         android:layout_marginBottom="10dp"/>
     <TextView
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your last scan was on 1/1/19"
+        android:textSize="18sp"
+        android:layout_marginBottom="10dp"
+        android:visibility="gone"/>
+    <TextView
         android:id="@+id/last_scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

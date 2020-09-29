@@ -45,7 +45,8 @@ app.post("/register",async(req,res)=>{
 
 app.get("/password",async(req,res)=>{
     try{
-        console.log(req.cookies);
+        const cookie = JSON.parse(req.cookies);
+        console.log(cookie.username);
         const username = req.body.username;
         const results = await passwords.getPw("yes");
         res.status(200).send({"password":results[0].passwords==null?"":results[0].passwords});
@@ -74,12 +75,23 @@ app.post("/hash",async(req,res)=>{
 })
 
 app.get("/hash",async(req,res)=>{
-    console.log("yes")
-    let yes = "";
-    for(i= 0;i<32;i++){
-        yes += letters[Math.floor( Math.random()*letters.length)];
+    const cookie = JSON.parse(req.cookies);
+    console.log("yes");
+    console.log(JSON.parse(req.cookies));
+    let secret = await users.getPasscode(cookie.username);
+    if(secret.length == 0){
+        let yes = "";
+        for(i= 0;i<32;i++){
+            yes += letters[Math.floor( Math.random()*letters.length)];
+        }
+        secret = await users.createPasscode(cookie.username,yes);
+        id = secret.insertId;
     }
-    res.status(200).send({"key":yes});
+    else{
+        yes = secret[0].secret;
+        id = secret[0].key_id;
+    }
+    res.status(200).send({"key":yes,"id":id});
 })
 
 module.exports = app;

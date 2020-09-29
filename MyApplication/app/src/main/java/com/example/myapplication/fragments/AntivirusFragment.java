@@ -71,7 +71,7 @@ public class AntivirusFragment extends Fragment{
                         if (isAntivirusRunning()) {
                             Toast.makeText(getContext(), "A scan is running already! Don't overwork me T.T", Toast.LENGTH_SHORT).show();
                         } else {
-                            workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(AntivirusWorker.class).build()).getResult().addListener();
+                            workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(AntivirusWorker.class).build());
                             Toast.makeText(getContext(), "Scan started! Check your notification bar for status!", Toast.LENGTH_SHORT).show();
                             lastScan.setVisibility(View.GONE);
                             button.setVisibility(View.GONE);

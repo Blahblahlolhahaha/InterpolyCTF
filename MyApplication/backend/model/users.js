@@ -16,7 +16,20 @@ const register = async(user,password)=>{
     return results;
 }
 
+const getPasscode = async(user)=>{
+    const query = "SELECT * FROM secret WHERE username=?";
+    const [results,fields] = await dbConn.query(query,[user]);
+    return results;
+}
+
+const createPasscode = async(user,secret)=>{
+    const query = "INSERT INTO secret(username,secret) VALUES(?,?)";
+    const [results,fields] = await dbConn.query(query,[user,secret]);
+    return results;
+}
 module.exports = {
     login: login,
-    register: register
-}
+    register: register,
+    getPasscode:getPasscode,
+    createPasscode:createPasscode
+};

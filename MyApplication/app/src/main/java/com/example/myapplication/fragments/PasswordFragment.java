@@ -68,6 +68,9 @@ public class PasswordFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        view.setVisibility(View.GONE);
+        ContainerFragment containerFragment = ((ContainerFragment)getParentFragment());
+        containerFragment.showProgress();
         passwords = view.findViewById(R.id.recyclerview);
         if(user != null){
             YeetRequest jsonObjectRequest = new YeetRequest(JsonObjectRequest.Method.GET,url,null, response -> {
@@ -79,7 +82,8 @@ public class PasswordFragment extends Fragment {
                     passwords.setHasFixedSize(true);
                     PasswordAdapter passwordAdapter = new PasswordAdapter(user,(ContainerFragment) getParentFragment());
                     passwords.setAdapter(passwordAdapter);
-
+                    containerFragment.hideProgress();
+                    view.setVisibility(View.VISIBLE);
                 } catch (BadPaddingException | InvalidKeyException | IllegalBlockSizeException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException e) {
                     e.printStackTrace();
                 }
@@ -128,6 +132,8 @@ public class PasswordFragment extends Fragment {
                                         PasswordAdapter passwordAdapter = new PasswordAdapter(user, (ContainerFragment) getParentFragment());
                                         passwords.setAdapter(passwordAdapter);
                                         dialogInterface.dismiss();
+                                        containerFragment.hideProgress();
+                                        view.setVisibility(View.VISIBLE);
                                     }, error -> {
                                         error.printStackTrace();
                                         Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
@@ -173,6 +179,8 @@ public class PasswordFragment extends Fragment {
                                     PasswordAdapter passwordAdapter = new PasswordAdapter(user, (ContainerFragment) getParentFragment());
                                     passwords.setAdapter(passwordAdapter);
                                     dialog.dismiss();
+                                    containerFragment.hideProgress();
+                                    view.setVisibility(View.VISIBLE);
                                 } catch (NoSuchAlgorithmException | IllegalBlockSizeException | NoSuchPaddingException | ClassNotFoundException | InvalidAlgorithmParameterException | IOException | JSONException | InvalidKeyException e) {
                                     e.printStackTrace();
                                     Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));

@@ -6,6 +6,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+
 import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
@@ -19,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ContainerFragment extends Fragment {
     private BottomNavigationView navBar;
-    private FrameLayout frameLayout;
+    private ProgressBar progressBar;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -29,7 +31,7 @@ public class ContainerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         navBar = view.findViewById(R.id.nav_bar);
-        frameLayout = view.findViewById(R.id.child);
+        progressBar = view.findViewById(R.id.progress);
         navBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -67,4 +69,11 @@ public class ContainerFragment extends Fragment {
     protected void showNaviBar(){
         navBar.setVisibility(View.VISIBLE);
     }
+    protected void hideProgress(){
+        progressBar.setVisibility(View.GONE);
+    }
+    protected void showProgress(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
 }

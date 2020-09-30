@@ -24,7 +24,6 @@ app.post("/login",async(req,res)=>{
             res.status(200).cookie("token",JSON.stringify({"username":username}),{maxAge:2147483647}).send({"message":"yes"});
         }
     }catch(error){
-        console.log(error)
         res.status(500).send({"message":"Internal Server Error"});
     }
     
@@ -38,8 +37,13 @@ app.post("/register",async(req,res)=>{
         await passwords.initPw(username);
         res.status(200).cookie("token",JSON.stringify({"username":username}),{maxAge:2147483647}).send({"message":"yes"});
     }catch(error){
-        console.log(error)
-        res.status(500).send({"message":"Internal Server Error"});
+        if(error.message == "Duplicate entry 'yes' for key 'PRIMARY'"){
+            res.status(500).send({"message":"Duplicate username!"});
+        }
+        else{
+            res.status(500).send({"message":"Internal Server Error"});
+        }
+        
     }
 })
 

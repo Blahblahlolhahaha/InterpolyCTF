@@ -27,6 +27,7 @@ import org.json.JSONObject;
 
 import java.net.HttpCookie;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class RegisterFragment extends Fragment {
@@ -71,31 +72,36 @@ public class RegisterFragment extends Fragment {
                     jsonObject.put("password",password);
                     YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, url, jsonObject, response -> {
                         try {
-                            if(response.getInt("statusCode") == 500){
-                                Log.e(LOG_TAG,"Wrong username/password!");
-                                Toast.makeText(getContext(),"Username and/or password incorrect!",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Log.i(LOG_TAG,"Registration Successful! User info: " + response.toString());
-                                String cookieString = response.getString("cookie");
-                                HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
-                                CookieBoi cookieBoi = new CookieBoi(getContext());
-                                cookieBoi.add(URI.create(url),cookie);
-                                ContainerFragment containerFragment = new ContainerFragment();
-                                fragmentTransaction(containerFragment);
-                            }
+                            Log.i(LOG_TAG,"Registration Successful! User info: " + response.toString());
+                            String cookieString = response.getString("cookie");
+                            HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
+                            CookieBoi cookieBoi = new CookieBoi(getContext());
+                            cookieBoi.add(URI.create(url),cookie);
+                            ContainerFragment containerFragment = new ContainerFragment();
+                            fragmentTransaction(containerFragment);
                         } catch (JSONException e) {
                             Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
                         }
                     }, error -> {
-                        Log.e(LOG_TAG, Objects.requireNonNull(error.getMessage()));
-                        Toast.makeText(getContext(),"An error occurred!",Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
+                            String e;
+                            if(jsonObject1.getString("message").equals("Duplicate username!")){
+                                e = "Username has been taken T.T!";
+                            }
+                            else{
+                                e = "An error occurred T.T!";
+                            }
+                            Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     });
                     Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
-                }catch (Exception e){
-                    Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
+                } catch (Exception e){
+                    Log.e(LOG_TAG, "Error:",e);
                     Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
 

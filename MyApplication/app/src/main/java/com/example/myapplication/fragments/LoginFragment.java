@@ -68,31 +68,37 @@ public class LoginFragment extends Fragment {
                     jsonObject.put("password",password);
                     YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, url, jsonObject, response -> {
                         try {
-                            if(response.getInt("statusCode") == 500){
-                                Log.e(LOG_TAG,"Wrong username/password!");
-                                Toast.makeText(getContext(),"Username and/or password incorrect!",Toast.LENGTH_SHORT).show();
-                            }
-                            else{
-                                Log.i(LOG_TAG,"Login Successful! User info: " + response.toString());
-                                String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
-                                HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
-                                CookieBoi cookieBoi = new CookieBoi(getContext());
-                                cookieBoi.add(URI.create(url),cookie);
-                                ContainerFragment containerFragment = new ContainerFragment();
-                                fragmentTransaction(containerFragment);
-                            }
+                            Log.i(LOG_TAG,"Login Successful! User info: " + response.toString());
+                            String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
+                            HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
+                            CookieBoi cookieBoi = new CookieBoi(getContext());
+                            cookieBoi.add(URI.create(url),cookie);
+                            ContainerFragment containerFragment = new ContainerFragment();
+                            fragmentTransaction(containerFragment);
                         } catch (JSONException | UnsupportedEncodingException e) {
                             Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
                         }
                     }, error -> {
-                        Log.e(LOG_TAG, Objects.requireNonNull(error.getMessage()));
-                        Toast.makeText(getContext(),"An error occurred!",Toast.LENGTH_SHORT).show();
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
+                            String e;
+                            if(jsonObject1.getString("message").equals("Invalid Login!")){
+                                e = "Wrong username/password (；￣Д￣）!";
+
+                            }
+                            else{
+                                e = "An error occurred T.T!";
+                            }
+                            Log.e(LOG_TAG, "User screwed up!");
+                            Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     });
                     Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
-                } catch (JSONException e) {
-                    Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
-                }catch (EmptyError e){
-                    Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
+                } catch (JSONException | EmptyError e){
+                    Log.e(LOG_TAG, "Error:",e);
                     Toast.makeText(getContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
 

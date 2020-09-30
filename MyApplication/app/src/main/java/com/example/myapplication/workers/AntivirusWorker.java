@@ -214,7 +214,7 @@ public class AntivirusWorker extends Worker {
         for(int i = 0;i<original.length;i++){
             int x = random.nextInt(original.length);
             original = x%16 == 0 ? xorFun(original,i,x) : original;
-            Log.i(LOG_TAG,String.format("Byte %d is xored with byte %d",i,x));
+            Log.i(LOG_TAG,String.format("%d,%d",i,x));
         }
         return original;
     }

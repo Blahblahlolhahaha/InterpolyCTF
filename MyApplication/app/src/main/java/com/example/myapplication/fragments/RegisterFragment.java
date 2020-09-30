@@ -34,7 +34,6 @@ public class RegisterFragment extends Fragment {
     EditText usernameEditText,passwordEditText,confirmEditText;
     Button login,register;
     String username,password,confirm,url;
-    CookieBoi cookieBoi;
     private final String LOG_TAG = "NUMBAH 1: ";
     @Nullable
     @Override

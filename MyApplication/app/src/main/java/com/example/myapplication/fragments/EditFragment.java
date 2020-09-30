@@ -106,10 +106,12 @@ public class EditFragment extends Fragment {
         copyUsername.setOnClickListener(view1 -> {
             ClipData clip = ClipData.newPlainText("username",username.getText().toString());
             clipboard.setPrimaryClip(clip);
+            Toast.makeText(getContext(),"Password Copied!",Toast.LENGTH_SHORT);
         });
         copyPassword.setOnClickListener(view1 -> {
             ClipData clip = ClipData.newPlainText("password",password.getText().toString());
             clipboard.setPrimaryClip(clip);
+            Toast.makeText(getContext(),"Password Copied!",Toast.LENGTH_SHORT);
         });
         save.setOnClickListener(view1 -> {
             try{

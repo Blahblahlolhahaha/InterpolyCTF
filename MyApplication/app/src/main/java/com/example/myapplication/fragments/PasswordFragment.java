@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -83,6 +84,7 @@ public class PasswordFragment extends Fragment {
                     e.printStackTrace();
                 }
             }, Throwable::printStackTrace);
+            jsonObjectRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
             Volley.newRequestQueue(getContext()).add(jsonObjectRequest);
         }
         else{

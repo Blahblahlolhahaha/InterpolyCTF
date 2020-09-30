@@ -63,10 +63,8 @@ public class ContainerFragment extends Fragment {
 
     protected void hideNaviBar(){
         navBar.setVisibility(View.GONE);
-        frameLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
     }
     protected void showNaviBar(){
         navBar.setVisibility(View.VISIBLE);
-        frameLayout.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayoutCompat.LayoutParams.MATCH_PARENT, 1780));
     }
 }

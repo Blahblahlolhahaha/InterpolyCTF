@@ -49,10 +49,9 @@ app.post("/register",async(req,res)=>{
 
 app.get("/password",async(req,res)=>{
     try{
-        const cookie = JSON.parse(req.cookies);
-        console.log(cookie.username);
-        const username = req.body.username;
-        const results = await passwords.getPw("yes");
+        const cookie = JSON.parse(req.cookies.token);
+        const username = cookie.username;
+        const results = await passwords.getPw(username);
         res.status(200).send({"password":results[0].passwords==null?"":results[0].passwords});
     }catch(error){
         console.log(error);

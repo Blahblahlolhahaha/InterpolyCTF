@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<p576f3918.p064bf416.p9d2b1ad5.p27898c00 android:layout_width="fill_parent" android:layout_height="fill_parent"
-  xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-    <FrameLayout android:id="@id/fragment" android:layout_width="fill_parent" android:layout_height="fill_parent" />
-</p576f3918.p064bf416.p9d2b1ad5.p27898c00>

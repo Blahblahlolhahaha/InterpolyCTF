@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<p576f3918.p064bf416.p9d2b1ad5.p27898c00 android:gravity="center_horizontal" android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageView android:background="@drawable/shield" android:layout_width="200.0dip" android:layout_height="200.0dip" android:layout_marginBottom="20.0dip" />
+    <TextView android:textSize="22.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="Welcome to Numbah 1 Antivirus!" />
+    <TextView android:textSize="18.0sp" android:id="@id/progress" android:visibility="gone" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="Your last scan was on 1/1/19" />
+    <TextView android:textSize="18.0sp" android:id="@id/last_scan" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:text="Your last scan was on 1/1/19" />
+    <Button android:textColor="@color/white" android:id="@id/scan" android:background="@drawable/blue_button" android:layout_width="100.0dip" android:layout_height="wrap_content" android:text="Scan Now!" android:textAllCaps="false" />
+</p576f3918.p064bf416.p9d2b1ad5.p27898c00>

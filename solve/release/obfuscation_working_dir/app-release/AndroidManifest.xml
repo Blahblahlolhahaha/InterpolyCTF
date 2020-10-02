@@ -1,0 +1,63 @@
+<manifest xmlns:obfuscation="http://schemas.android.com/apk/res/android" obfuscation:compileSdkVersion="30" obfuscation:compileSdkVersionCodename="11" package="com.example.myapplication" platformBuildVersionCode="30" platformBuildVersionName="11">
+    <uses-permission obfuscation:name="android.permission.WAKE_LOCK" />
+    <uses-permission obfuscation:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission obfuscation:name="android.permission.FOREGROUND_SERVICE" />
+    <application obfuscation:allowBackup="true" obfuscation:appComponentFactory="androidx.core.app.CoreComponentFactory" obfuscation:extractNativeLibs="false" obfuscation:icon="@mipmap/ic_launcher" obfuscation:label="@string/app_name" obfuscation:roundIcon="@mipmap/ic_launcher_round" obfuscation:supportsRtl="true" obfuscation:theme="@style/AppTheme" obfuscation:usesCleartextTraffic="true">
+        <service obfuscation:directBootAware="false" obfuscation:enabled="@bool/enable_system_job_service_default" obfuscation:exported="true" obfuscation:name="androidx.work.impl.background.systemjob.SystemJobService" obfuscation:permission="android.permission.BIND_JOB_SERVICE" />
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="true" obfuscation:exported="false" obfuscation:name="androidx.work.impl.utils.ForceStopRunnable$BroadcastReceiver" />
+        <service obfuscation:directBootAware="false" obfuscation:enabled="@bool/enable_system_alarm_service_default" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.SystemAlarmService" />
+        <service obfuscation:directBootAware="false" obfuscation:enabled="@bool/enable_system_foreground_service_default" obfuscation:exported="false" obfuscation:name="androidx.work.impl.foreground.SystemForegroundService" />
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="false" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.ConstraintProxy$NetworkStateProxy">
+            <intent-filter>
+                <action obfuscation:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <service obfuscation:directBootAware="true" obfuscation:exported="false" obfuscation:name="androidx.room.MultiInstanceInvalidationService" />
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="false" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryNotLowProxy">
+            <intent-filter>
+                <action obfuscation:name="android.intent.action.BATTERY_LOW" />
+                <action obfuscation:name="android.intent.action.BATTERY_OKAY" />
+            </intent-filter>
+        </receiver>
+        <activity obfuscation:name="com.example.myapplication.MainActivity" obfuscation:screenOrientation="sensorPortrait">
+            <intent-filter>
+                <action obfuscation:name="android.intent.action.MAIN" />
+                <category obfuscation:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="false" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.ConstraintProxy$BatteryChargingProxy">
+            <intent-filter>
+                <action obfuscation:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
+                <action obfuscation:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="true" obfuscation:exported="true" obfuscation:name="androidx.work.impl.diagnostics.DiagnosticsReceiver" obfuscation:permission="android.permission.DUMP">
+            <intent-filter>
+                <action obfuscation:name="androidx.work.diagnostics.REQUEST_DIAGNOSTICS" />
+            </intent-filter>
+        </receiver>
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="false" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.ConstraintProxy$StorageNotLowProxy">
+            <intent-filter>
+                <action obfuscation:name="android.intent.action.DEVICE_STORAGE_LOW" />
+                <action obfuscation:name="android.intent.action.DEVICE_STORAGE_OK" />
+            </intent-filter>
+        </receiver>
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="false" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.RescheduleReceiver">
+            <intent-filter>
+                <action obfuscation:name="android.intent.action.BOOT_COMPLETED" />
+                <action obfuscation:name="android.intent.action.TIME_SET" />
+                <action obfuscation:name="android.intent.action.TIMEZONE_CHANGED" />
+            </intent-filter>
+        </receiver>
+        <provider obfuscation:authorities="com.example.myapplication.workmanager-init" obfuscation:directBootAware="false" obfuscation:exported="false" obfuscation:multiprocess="true" obfuscation:name="androidx.work.impl.WorkManagerInitializer" />
+        <receiver obfuscation:directBootAware="false" obfuscation:enabled="@bool/enable_system_alarm_service_default" obfuscation:exported="false" obfuscation:name="androidx.work.impl.background.systemalarm.ConstraintProxyUpdateReceiver">
+            <intent-filter>
+                <action obfuscation:name="androidx.work.impl.background.systemalarm.UpdateProxies" />
+            </intent-filter>
+        </receiver>
+    </application>
+    <uses-permission obfuscation:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission obfuscation:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission obfuscation:name="android.permission.INTERNET" />
+    <uses-permission obfuscation:name="android.permission.READ_EXTERNAL_STORAGE" />
+</manifest>

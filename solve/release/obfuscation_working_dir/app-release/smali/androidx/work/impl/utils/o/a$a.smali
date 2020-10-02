@@ -1,0 +1,20 @@
+.class synthetic Landroidx/work/impl/utils/o/a$a;
+.super Ljava/lang/Object;
+.source ""
+
+
+# annotations
+.annotation system Ldalvik/annotation/EnclosingClass;
+    value = Landroidx/work/impl/utils/o/a;
+.end annotation
+
+.annotation system Ldalvik/annotation/InnerClass;
+    accessFlags = 0x1008
+    name = null
+.end annotation
+.method static constructor <clinit>()V
+	.locals 1
+
+	return-void
+.end method
+

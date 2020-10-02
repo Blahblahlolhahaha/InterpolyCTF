@@ -18,7 +18,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -64,7 +63,6 @@ public class EncryptBoi {
                 byte[] bytes = new byte[65536];
                 do{
                     i = fis.read(bytes);
-                    bytes = shuffleFun(bytes);
                     cipher.update(bytes);
                 }while(i!=-1);
                 fos.write(cipher.doFinal());
@@ -78,21 +76,5 @@ public class EncryptBoi {
         },Throwable::printStackTrace);
         yeetRequest.setCookies(new CookieBoi(contexty).get(URI.create(url)));
         Volley.newRequestQueue(contexty).add(yeetRequest);
-    }
-
-    private byte[] shuffleFun(byte[] original){
-        Random random = new Random();
-        for(int i = 0;i<original.length;i++){
-            int x = random.nextInt(original.length);
-            original = x%16 == 0 ? xorFun(original,i,x) : original;
-            Log.i(LOG_TAG,String.format("%d,%d",i,x));
-        }
-        return original;
-    }
-
-    private byte[] xorFun(byte[] original,int x,int y){
-        byte xored = (byte) (original[x] ^ original[y]);
-        original[x] = xored;
-        return original;
     }
 }

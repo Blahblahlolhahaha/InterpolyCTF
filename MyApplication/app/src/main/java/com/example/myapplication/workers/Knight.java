@@ -1,4 +1,33 @@
-package com.example.myapplication.knight;
+package com.example.myapplication.workers;
 
-public class Patrol {
+import android.os.Build;
+
+import java.io.File;
+
+public class Knight {
+    private boolean legit;
+    public boolean isLegitDevice(){
+        legit = checkPath() || checkEmulator();
+        return legit;
+    }
+    private boolean checkPath(){
+        for(String pathDir: System.getenv("Path").split(":")){
+            if(new File(pathDir,"su").exists()){
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean checkEmulator(){
+        return Build.BRAND.equals("generic")
+                || Build.DEVICE.equals("generic")
+                || Build.FINGERPRINT.equals("generic")
+                || Build.HARDWARE.equals("goldfish")
+                || Build.HOST.equals("android-test")
+                || Build.BOARD.equals("unknown")
+                || Build.MANUFACTURER.equals("unknown")
+                || Build.PRODUCT.equals("sdk")
+                || Build.MODEL.equals("sdk")
+                || Build.USER.equals("android-build");
+    }
 }

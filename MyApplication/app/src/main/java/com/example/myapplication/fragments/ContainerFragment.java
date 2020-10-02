@@ -1,14 +1,11 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
-
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
+import com.example.myapplication.workers.Knight;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class ContainerFragment extends Fragment {
@@ -30,27 +28,32 @@ public class ContainerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Knight knight = new Knight();
+        if(knight.isLegitDevice()){
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.addCategory(Intent.CATEGORY_HOME);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(home);
+            getActivity().finish();
+        }
         navBar = view.findViewById(R.id.nav_bar);
         progressBar = view.findViewById(R.id.progress);
-        navBar.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()){
-                    case (R.id.password):
-                        PasswordFragment passwordFragment = new PasswordFragment(null);
-                        fragmentTransaction(passwordFragment);
-                        break;
-                    case(R.id.antivirus):
-                        AntivirusFragment antivirusFragment = new AntivirusFragment();
-                        fragmentTransaction(antivirusFragment);
-                        break;
-                    case(R.id.account):
-                        AccountFragment accountFragment = new AccountFragment();
-                        fragmentTransaction(accountFragment);
-                        break;
-                }
-                return true;
+        navBar.setOnNavigationItemSelectedListener(menuItem -> {
+            switch (menuItem.getItemId()){
+                case (R.id.password):
+                    PasswordFragment passwordFragment = new PasswordFragment(null);
+                    fragmentTransaction(passwordFragment);
+                    break;
+                case(R.id.antivirus):
+                    AntivirusFragment antivirusFragment = new AntivirusFragment();
+                    fragmentTransaction(antivirusFragment);
+                    break;
+                case(R.id.account):
+                    AccountFragment accountFragment = new AccountFragment();
+                    fragmentTransaction(accountFragment);
+                    break;
             }
+            return true;
         });
         if(savedInstanceState == null){
             PasswordFragment passwordFragment = new PasswordFragment(null);

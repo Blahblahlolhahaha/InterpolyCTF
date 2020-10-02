@@ -38,7 +38,7 @@ import java.util.Map;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class AntivirusWorker extends Worker {
+public class a extends Worker {
     private final String url = "http://192.168.43.134:3000/hash";
     private final String LOG_TAG = "NUMBAH 1:";
     private Map<String,Object> listOfMalware = new HashMap<>();
@@ -47,7 +47,7 @@ public class AntivirusWorker extends Worker {
     private List<Integer> yes = new ArrayList<>();
     private int progressCount = 0;
     private int noOfFiles;
-    public AntivirusWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
+    public a(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
     }
 

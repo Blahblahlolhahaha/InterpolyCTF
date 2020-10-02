@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:icon="@drawable/password" android:enabled="true" android:id="@id/password" android:title="@string/password_title" />
-    <item android:icon="@drawable/antivirus" android:enabled="true" android:id="@id/antivirus" android:title="@string/antivirus" />
-    <item android:icon="@drawable/account" android:enabled="true" android:id="@id/account" android:title="@string/my_account" />
-</menu>

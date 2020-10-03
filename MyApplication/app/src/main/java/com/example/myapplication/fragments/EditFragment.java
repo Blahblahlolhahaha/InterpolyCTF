@@ -50,7 +50,6 @@ public class EditFragment extends Fragment {
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
     private Button cancel,delete,save;
-    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
     private final String url = "/password";
     public EditFragment(User user){
         this.user = user;
@@ -131,18 +130,14 @@ public class EditFragment extends Fragment {
                 details.put("username",username);
                 details.put("password",encrypted);
                 YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
-                    try {
-                        Log.i(LOG_TAG,response1.toString(4));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    goBack();
                 }, error -> {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
                 yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
-                goBack();
+
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
                 e.printStackTrace();
             }
@@ -157,18 +152,13 @@ public class EditFragment extends Fragment {
                 details.put("username",user.getUsername());
                 details.put("password",encrypted);
                 YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
-                    try {
-                        Log.i(LOG_TAG,response1.toString(4));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    goBack();
                 }, error -> {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
                 yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
-                goBack();
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
                 e.printStackTrace();
             }

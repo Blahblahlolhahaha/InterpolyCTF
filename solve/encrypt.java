@@ -21,6 +21,8 @@ public class encrypt {
             IvParameterSpec iv = new IvParameterSpec(new byte[]{109, -103, 46, 73, 39, -18, -65, 27, 65, 21, -86, -45, 93, 65, 102, 34});
             cipher.init(Cipher.ENCRYPT_MODE,key,iv);
             byte[] plaintext = cipher.doFinal("/hash".getBytes());
+            cipher.init(Cipher.ENCRYPT_MODE,key,iv);
+            plaintext = cipher.doFinal("/hash".getBytes());
             String encrypted = Base64.getEncoder().encodeToString(plaintext);
             System.out.println(encrypted);
         }catch (NoSuchPaddingException | NoSuchAlgorithmException | InvalidKeyException | InvalidAlgorithmParameterException | BadPaddingException | IllegalBlockSizeException e ){

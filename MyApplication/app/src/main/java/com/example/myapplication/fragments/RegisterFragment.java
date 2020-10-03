@@ -70,7 +70,7 @@ public class RegisterFragment extends Fragment {
                 jsonObject.put("password",password);
                 YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, new GimmeString(getString(R.string.url)).decryptBoi() +  url, jsonObject, response -> {
                     try {
-                        Log.i(LOG_TAG,"Registration Successful! User info: " + response.toString());
+                        Log.i(LOG_TAG,"Registration Successful!");
                         String cookieString = response.getString("cookie");
                         HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
                         CookieBoi cookieBoi = new CookieBoi(getContext());
@@ -78,7 +78,7 @@ public class RegisterFragment extends Fragment {
                         ContainerFragment containerFragment = new ContainerFragment();
                         fragmentTransaction(containerFragment);
                     } catch (JSONException e) {
-                        Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
+                        Log.e(LOG_TAG, "An error occured!\nError: ", e);
                     }
                 }, error -> {
                     try {

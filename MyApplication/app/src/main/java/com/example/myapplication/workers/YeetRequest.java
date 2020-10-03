@@ -8,6 +8,7 @@ import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class YeetRequest extends JsonObjectRequest {
-    private final String LOG_TAG = "NUMBAH 1:";
+
     private final String SET_COOKIE_KEY = "Set-cookie";
     // Since we're extending a Request class
     // we just use its constructor
@@ -59,7 +60,7 @@ public class YeetRequest extends JsonObjectRequest {
             }
             return Response.success(jsonResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (JSONException e) {
-           Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
+            e.printStackTrace();
            return Response.error(new ParseError(e));
         }
     }

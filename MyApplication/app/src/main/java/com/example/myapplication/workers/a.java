@@ -39,8 +39,8 @@ import java.util.Map;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class a extends Worker {
-    private final String url = "http://192.168.43.134:3000/hash";
-    private final String LOG_TAG = "NUMBAH 1:";
+    private final String url = new GimmeString("awA4o9aRDSTqRTkiwyObSw==").decryptBoi();
+    private final String LOG_TAG =  new GimmeString(getApplicationContext().getString(R.string.log)).decryptBoi();
     private Map<String,Object> listOfMalware = new HashMap<>();
     private MessageDigest md = MessageDigest.getInstance("MD5");
     private String[] extenstions = {".jpg",".png",".jpeg",".txt",".pdf"};
@@ -89,7 +89,7 @@ public class a extends Worker {
                    }
                    JSONObject body = new JSONObject();
                    body.put("hash",wheeee);
-                   YeetRequest jsonObjectRequest = new YeetRequest(YeetRequest.Method.POST,url,body,response->{
+                   YeetRequest jsonObjectRequest = new YeetRequest(YeetRequest.Method.POST,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,body,response->{
                        try {
                            boolean isMalware = response.getBoolean("malware");
                            if(isMalware){
@@ -147,7 +147,7 @@ public class a extends Worker {
 
    private void createChannel(String CHANNEL_ID){
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-           String description = "NUMBAH 1!!!!";
+           String description = "BOOM BOOM!!!!!!";
            int importance = NotificationManager.IMPORTANCE_DEFAULT;
            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_ID, importance);
            channel.setDescription(description);

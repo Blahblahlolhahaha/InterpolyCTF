@@ -15,19 +15,28 @@ import android.util.Log;
 import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.WelcomeFragment;
 import com.example.myapplication.workers.CookieBoi;
+import com.example.myapplication.workers.GimmeString;
 
 import java.net.URI;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 public class MainActivity extends AppCompatActivity{
     private CookieBoi cookieBoi;
 
     private WelcomeFragment welcomeFragment;
 
-    private final String DEFAULT_URL = "http://192.168.43.134:3000";
+    private final String DEFAULT_URL = new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi();
 
-    private final String LOG_TAG = "NUMBAH 1:";
+    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
 
     private URI defaultUri = URI.create(DEFAULT_URL);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +72,7 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         }
-        else { //permission is automatically granted on sdk<23 upon installation
+        else {
             Log.v(LOG_TAG,"Permission is granted");
             return true;
         }
@@ -76,5 +85,4 @@ public class MainActivity extends AppCompatActivity{
             Log.v(LOG_TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
         }
     }
-
 }

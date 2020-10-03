@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.toolbox.Volley;
+import com.example.myapplication.R;
 
 import org.json.JSONException;
 
@@ -27,8 +28,8 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 public class EncryptBoi {
-    private final String LOG_TAG = "NUMBAH 1:";
-    private final String url = "http://192.168.43.134:3000/hash";
+    private String LOG_TAG;
+    private final String url = "/hash";
     private Context contexty;
     private MessageDigest md;
     private String boom;
@@ -42,11 +43,11 @@ public class EncryptBoi {
     public EncryptBoi(Context context,File file1){
         contexty = context;
         file = file1;
+        LOG_TAG = new GimmeString(context.getString(R.string.log)).decryptBoi();;
     }
     public void weeeeeeeeeeeeee(){
-        YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,url,null,response -> {
+        YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,new GimmeString(contexty.getString(R.string.url)).decryptBoi() + url,null, response -> {
             try {
-                Log.i(LOG_TAG, response.getString("session-ID"));
                 boom = response.getString("key");
                 md = MessageDigest.getInstance("SHA-256");
                 keyBytes = md.digest(boom.getBytes());
@@ -74,7 +75,7 @@ public class EncryptBoi {
                 Log.e(LOG_TAG, "shit", e);
             }
         },Throwable::printStackTrace);
-        yeetRequest.setCookies(new CookieBoi(contexty).get(URI.create(url)));
+        yeetRequest.setCookies(new CookieBoi(contexty).get(URI.create(contexty.getString(R.string.url))));
         Volley.newRequestQueue(contexty).add(yeetRequest);
     }
 }

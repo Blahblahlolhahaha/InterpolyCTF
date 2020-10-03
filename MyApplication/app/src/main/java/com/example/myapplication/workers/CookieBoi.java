@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 
+import com.example.myapplication.R;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -29,11 +31,12 @@ public class CookieBoi implements CookieStore {
 
     private final String COOKIESPREF = "COOKIES";
     private final String COOKIES_URI_STORE = "URI_STORE";
-    private final String LOG_TAG = "NUMBAH 1:";
+    private String LOG_TAG;
     private Map<URI,Map<String,HttpCookie>> cookies = new HashMap<>();
     private List<String> storedDomains;
 
     public CookieBoi(Context context){
+        LOG_TAG = context.getString(R.string.log);
         storedDomains = new ArrayList<String>();
         cookiePref = context.getSharedPreferences(COOKIESPREF,0);
         String domains = cookiePref.getString(COOKIES_URI_STORE,null);

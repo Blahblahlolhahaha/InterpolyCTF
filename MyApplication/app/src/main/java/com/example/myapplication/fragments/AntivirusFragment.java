@@ -24,6 +24,7 @@ import androidx.work.WorkManager;
 import androidx.work.WorkQuery;
 
 import com.example.myapplication.R;
+import com.example.myapplication.workers.GimmeString;
 import com.example.myapplication.workers.a;
 import com.google.common.util.concurrent.ListenableFuture;
 
@@ -36,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 public class AntivirusFragment extends Fragment{
     private Button button;
     private TextView lastScan,progress;
-    private final String LOG_TAG = "NUMBAH 1:";
+    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
     private final String workName = "woohoooo";
     private SharedPreferences sharedPref;
     private Handler handler;
@@ -48,7 +49,6 @@ public class AntivirusFragment extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
         sharedPref = view.getContext().getSharedPreferences("Last Scan",0);
         lastScan = view.findViewById(R.id.last_scan);
         button = view.findViewById(R.id.scan);

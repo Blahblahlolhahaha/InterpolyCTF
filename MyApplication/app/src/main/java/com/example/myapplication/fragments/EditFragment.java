@@ -15,25 +15,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.PasswordAdapter;
 import com.example.myapplication.workers.CookieBoi;
+import com.example.myapplication.workers.GimmeString;
 import com.example.myapplication.workers.Password;
 import com.example.myapplication.workers.User;
 import com.example.myapplication.workers.YeetRequest;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +39,6 @@ import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.crypto.BadPaddingException;
@@ -55,7 +50,8 @@ public class EditFragment extends Fragment {
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
     private Button cancel,delete,save;
-    private final String LOG_TAG = "NUMBAH 1: ";
+    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
+    private final String url = "/password";
     public EditFragment(User user){
         this.user = user;
     }
@@ -132,10 +128,9 @@ public class EditFragment extends Fragment {
                 }
                 String username = user.getUsername();
                 JSONObject details = new JSONObject();
-                String url =  "http://192.168.43.134:3000/password";
                 details.put("username",username);
                 details.put("password",encrypted);
-                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,url,details, response1 -> {
+                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
                     try {
                         Log.i(LOG_TAG,response1.toString(4));
                     } catch (JSONException e) {
@@ -145,7 +140,7 @@ public class EditFragment extends Fragment {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
-                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
+                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
                 goBack();
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
@@ -159,10 +154,9 @@ public class EditFragment extends Fragment {
             try {
                 String encrypted = user.remove(passwordItem.getPosition());
                 JSONObject details = new JSONObject();
-                String url =  "http://192.168.43.134:3000/password";
                 details.put("username",user.getUsername());
                 details.put("password",encrypted);
-                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,url,details, response1 -> {
+                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
                     try {
                         Log.i(LOG_TAG,response1.toString(4));
                     } catch (JSONException e) {
@@ -172,7 +166,7 @@ public class EditFragment extends Fragment {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
-                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
+                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
                 goBack();
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {

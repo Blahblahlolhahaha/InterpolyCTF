@@ -45,17 +45,13 @@ import javax.crypto.IllegalBlockSizeException;
 
 public class EditFragment extends Fragment {
     private Password passwordItem;
-    private User user;
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
     private Button cancel,delete,save;
 
-    public EditFragment(User user){
-        this.user = user;
+    public EditFragment(){
     }
-
-    public EditFragment(User user,Password password){
-        this.user = user;
+    public EditFragment(Password password){
         this.passwordItem = password;
     }
 
@@ -116,16 +112,16 @@ public class EditFragment extends Fragment {
                     map.put("username",username.getText().toString());
                     map.put("password",password.getText().toString());
                     map.put("url",urlEditText.getText().toString());
-                    encrypted = user.replacePassword(passwordItem.getPosition(),map);
+                    encrypted = ((ContainerFragment)getParentFragment()).user.replacePassword(passwordItem.getPosition(),map);
                 }
                 else{
                     Map<String,Object> map = new HashMap<>();
                     map.put("username",username.getText().toString());
                     map.put("password",password.getText().toString());
                     map.put("url",urlEditText.getText().toString());
-                    encrypted = user.addPassword(map);
+                    encrypted = ((ContainerFragment)getParentFragment()).user.addPassword(map);
                 }
-                String username = user.getUsername();
+                String username = ((ContainerFragment)getParentFragment()).user.getUsername();
                 JSONObject details = new JSONObject();
                 details.put("username",username);
                 details.put("password",encrypted);
@@ -147,9 +143,9 @@ public class EditFragment extends Fragment {
         });
         delete.setOnClickListener(view2 -> {
             try {
-                String encrypted = user.remove(passwordItem.getPosition());
+                String encrypted = ((ContainerFragment)getParentFragment()).user.remove(passwordItem.getPosition());
                 JSONObject details = new JSONObject();
-                details.put("username",user.getUsername());
+                details.put("username",((ContainerFragment)getParentFragment()).user.getUsername());
                 details.put("password",encrypted);
                 YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
                     goBack();
@@ -166,7 +162,7 @@ public class EditFragment extends Fragment {
     }
     private void goBack(){
         ((ContainerFragment)getParentFragment()).showNaviBar();
-        PasswordFragment passwordFragment = new PasswordFragment(user);
+        PasswordFragment passwordFragment = new PasswordFragment(((ContainerFragment)getParentFragment()).user);
         FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.child,passwordFragment).commit();

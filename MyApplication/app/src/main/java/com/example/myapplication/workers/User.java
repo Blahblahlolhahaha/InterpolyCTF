@@ -47,6 +47,7 @@ public class User {
 
     public User(String username, String masterPassword, String passwordBase64) throws NoSuchAlgorithmException, NoSuchPaddingException, BadPaddingException, InvalidKeyException, IllegalBlockSizeException, ClassNotFoundException, InvalidAlgorithmParameterException, IOException {
         this.username = username;
+        this.masterPassword = masterPassword;
         passwordBytes = Base64.decode(passwordBase64,0);
         md = MessageDigest.getInstance("SHA-256");
         keyBytes = md.digest(masterPassword.getBytes());

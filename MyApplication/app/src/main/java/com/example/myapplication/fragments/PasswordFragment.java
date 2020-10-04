@@ -43,7 +43,7 @@ public class PasswordFragment extends Fragment {
         view.setVisibility(View.VISIBLE);
         add = view.findViewById(R.id.add_password);
         add.setOnClickListener(view1 -> {
-            EditFragment editFragment = new EditFragment(user);
+            EditFragment editFragment = new EditFragment();
             FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.child,editFragment).commit();

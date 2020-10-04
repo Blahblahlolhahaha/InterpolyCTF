@@ -208,7 +208,7 @@ public class ContainerFragment extends Fragment {
                     fragmentTransaction(antivirusFragment);
                     break;
                 case(R.id.account):
-                    AccountFragment accountFragment = new AccountFragment(user);
+                    AccountFragment accountFragment = new AccountFragment();
                     fragmentTransaction(accountFragment);
                     break;
             }

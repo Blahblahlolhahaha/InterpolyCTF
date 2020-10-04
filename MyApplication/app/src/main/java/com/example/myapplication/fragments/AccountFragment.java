@@ -43,10 +43,7 @@ import javax.crypto.NoSuchPaddingException;
 
 public class AccountFragment extends Fragment {
     private CardView change,logout;
-    private User user;
-    public AccountFragment(User user){
-        this.user = user;
-    }
+    private String url;
 
     @Nullable
     @Override
@@ -56,7 +53,7 @@ public class AccountFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
+        url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
         change = view.findViewById(R.id.change);
         logout = view.findViewById(R.id.logout);
         change.setOnClickListener(view1 -> {
@@ -78,55 +75,9 @@ public class AccountFragment extends Fragment {
                 Button button  = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(view12 -> {
                     String masterPassword = editText.getText().toString();
-                    if(user.checkPassword(masterPassword)){
-                        LinearLayout linearLayout = new LinearLayout(getContext());
-                        linearLayout.setGravity(Gravity.CENTER);
-                        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
-                        linearLayout.setOrientation(LinearLayout.VERTICAL);
-                        linearLayout.setPadding(10,10,10,10);
-                        EditText password = new EditText(getContext());
-                        EditText confirm = new EditText(getContext());
-                        password.setPadding(10,0,0,0);
-                        confirm.setPadding(10,0,0,0);
-                        linearLayout.addView(password);
-                        linearLayout.addView(confirm);
-                        AlertDialog.Builder builder1  =  new AlertDialog.Builder(getContext());
-                        builder1.setTitle("Set Master Password");
-                        builder1.setMessage("Please set your master password. Please remember it as there will be no way to recover it if you forget it!");
-                        EditText editText1 = new EditText(getContext());
-                        editText1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        builder1.setView(linearLayout);
-                        builder1.setCancelable(false);
-                        builder1.setPositiveButton("Ok", null);
-                        builder1.setNegativeButton("Cancel",(dialogInterface1, i) -> {
-                            dialogInterface.dismiss();
-                        });
-                        AlertDialog dialog1 = builder1.create();
-                        dialog1.setOnShowListener(dialogInterface1 -> {
-                            String passwordText = password.getText().toString();
-                            String confirmText = confirm.getText().toString();
-                            if(passwordText.equals(confirmText)){
-                                try {
-                                    String encrypted = user.changePassword(passwordText);
-                                    JSONObject details = new JSONObject();
-                                    details.put("password",encrypted);
-                                    YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
-                                        dialog1.dismiss();
-                                        Toast.makeText(getContext(),"Success :D",Toast.LENGTH_SHORT).show();
-                                    }, error -> {
-                                        error.printStackTrace();
-                                        Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
-                                    });
-                                    yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
-                                    Volley.newRequestQueue(getContext()).add(yeetRequest);
-                                } catch (JSONException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                            else{
-                                Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                    if(((ContainerFragment)getParentFragment()).user.checkPassword(masterPassword)){
+                        setNewPassword();
+                        dialog.dismiss();
                     }
                     else{
                         Toast.makeText(getContext(),"Wrong password!",Toast.LENGTH_SHORT).show();
@@ -134,6 +85,7 @@ public class AccountFragment extends Fragment {
                 });
             });
             dialog.show();
+
         });
         logout.setOnClickListener(view1 -> {
             AlertDialog.Builder builder  =  new AlertDialog.Builder(getContext());
@@ -149,7 +101,64 @@ public class AccountFragment extends Fragment {
             builder.setNegativeButton("Cancel",(dialogInterface, i) -> {
                dialogInterface.dismiss();
             });
+            builder.create().show();
+        });
+    }
+
+    public void setNewPassword(){
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setGravity(Gravity.CENTER);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10,10,10,10);
+        EditText password = new EditText(getContext());
+        EditText confirm = new EditText(getContext());
+        password.setPadding(10,0,0,0);
+        confirm.setPadding(10,0,0,0);
+        linearLayout.addView(password);
+        linearLayout.addView(confirm);
+        AlertDialog.Builder builder1  =  new AlertDialog.Builder(getContext());
+        builder1.setTitle("Set Master Password");
+        builder1.setMessage("Please set your master password. Please remember it as there will be no way to recover it if you forget it!");
+        EditText editText1 = new EditText(getContext());
+        editText1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder1.setView(linearLayout);
+        builder1.setCancelable(false);
+        builder1.setPositiveButton("Ok", null);
+        builder1.setNegativeButton("Cancel",(dialogInterface1, i) -> {
+            dialogInterface1.dismiss();
+        });
+        AlertDialog dialog1 = builder1.create();
+        dialog1.setOnShowListener(dialogInterface1 -> {
+            Button yes = dialog1.getButton(DialogInterface.BUTTON_POSITIVE);
+            yes.setOnClickListener(view -> {
+                String passwordText = password.getText().toString();
+                String confirmText = confirm.getText().toString();
+                if(passwordText.equals(confirmText)){
+                    try {
+                        String encrypted = ((ContainerFragment)getParentFragment()).user.changePassword(passwordText);
+                        JSONObject details = new JSONObject();
+                        details.put("password",encrypted);
+                        YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
+                            dialog1.dismiss();
+                            Toast.makeText(getContext(),"Success :D",Toast.LENGTH_SHORT).show();
+                        }, error -> {
+                            error.printStackTrace();
+                            Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
+                        });
+                        yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
+                        Volley.newRequestQueue(getContext()).add(yeetRequest);
+                    } catch (JSONException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else{
+                    Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                }
+            });
 
         });
+        dialog1.show();
+
     }
 }

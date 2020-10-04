@@ -142,7 +142,7 @@ public class CookieBoi implements CookieStore {
         if(domains !=null){
             storedDomains = Arrays.asList(domains.split(","));
             for (String domain:storedDomains) {
-                cookiePrefsWriter.remove(COOKIESPREF + "_" + domains);
+                cookiePrefsWriter.remove(COOKIESPREF + "_" + domain);
             }
         }
         cookiePrefsWriter.remove(COOKIES_URI_STORE);

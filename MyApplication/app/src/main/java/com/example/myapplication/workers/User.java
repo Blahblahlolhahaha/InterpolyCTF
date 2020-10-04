@@ -32,13 +32,14 @@ public class User {
     private MessageDigest md;
     private SecretKey key;
     private Cipher cipher;
-
+    private String masterPassword;
     private IvParameterSpec iv = new IvParameterSpec(ivBytes);
 
     public User(String username,String masterPassword, List<Map<String,Object>> passwordList) throws NoSuchAlgorithmException, NoSuchPaddingException {
         this.username = username;
         this.passwordList = passwordList;
         md = MessageDigest.getInstance("SHA-256");
+        this.masterPassword = masterPassword;
         keyBytes = md.digest(masterPassword.getBytes());
         key = new SecretKeySpec(keyBytes,"AES");
         cipher = Cipher.getInstance("PBEWithHmacSHA256AndAES_256");
@@ -92,6 +93,18 @@ public class User {
         return Base64.encodeToString(encrypted,0);
     }
 
+    public boolean checkPassword(String password){
+        return masterPassword.equals(password);
+    }
+
+    public String changePassword(String password) throws NoSuchAlgorithmException, IllegalBlockSizeException, InvalidKeyException, InvalidAlgorithmParameterException, BadPaddingException, IOException {
+        masterPassword = password;
+        md = MessageDigest.getInstance("SHA-256");
+        keyBytes = md.digest(masterPassword.getBytes());
+        key = new SecretKeySpec(keyBytes,"AES");
+        return encryptAndConvertToBase64();
+    }
+
     private List<Map<String,Object>> decryptPassword() throws InvalidAlgorithmParameterException, InvalidKeyException, BadPaddingException, IllegalBlockSizeException, IOException, ClassNotFoundException {
         cipher.init(Cipher.DECRYPT_MODE,key,iv);
         byte[] decodedBytes = cipher.doFinal(passwordBytes);
@@ -102,7 +115,6 @@ public class User {
         ois.close();
         return passwords;
     }
-
 
 
 }

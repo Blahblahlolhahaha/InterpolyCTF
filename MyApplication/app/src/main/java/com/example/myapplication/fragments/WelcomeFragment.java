@@ -28,7 +28,7 @@ public class WelcomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Knight knight = new Knight();
-        if(knight.isLegitDevice()){
+        if(!knight.isLegitDevice()){
             Intent home = new Intent(Intent.ACTION_MAIN);
             home.addCategory(Intent.CATEGORY_HOME);
             home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

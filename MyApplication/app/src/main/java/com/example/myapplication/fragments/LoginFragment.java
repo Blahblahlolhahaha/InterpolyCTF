@@ -33,10 +33,9 @@ import java.net.URLDecoder;
 import java.util.Objects;
 
 public class LoginFragment extends Fragment {
-    EditText usernameEditText,passwordEditText;
-    Button login,register;
-    String username,password,url;
-    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
+    private EditText usernameEditText,passwordEditText;
+    private Button login,register;
+    private String username,password,url;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +48,7 @@ public class LoginFragment extends Fragment {
         passwordEditText = view.findViewById(R.id.password);
         login = view.findViewById(R.id.login);
         register = view.findViewById(R.id.register);
-
+        final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
         login.setOnClickListener(view12 -> {
             try {
                 url = "/login";

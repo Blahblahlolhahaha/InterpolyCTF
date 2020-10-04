@@ -30,10 +30,9 @@ import java.net.HttpCookie;
 import java.net.URI;
 
 public class RegisterFragment extends Fragment {
-    EditText usernameEditText,passwordEditText,confirmEditText;
-    Button login,register;
-    String username,password,confirm,url;
-    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
+    private EditText usernameEditText,passwordEditText,confirmEditText;
+    private Button login,register;
+    private String username,password,confirm,url;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class RegisterFragment extends Fragment {
         confirmEditText = view.findViewById(R.id.confirm);
         login = view.findViewById(R.id.login);
         register = view.findViewById(R.id.register);
-
+        String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
         register.setOnClickListener(view1 -> {
             try {
                 url = "/register";

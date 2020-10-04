@@ -50,8 +50,8 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class ContainerFragment extends Fragment {
-    private final String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
-    private final String LOG_TAG =  new GimmeString(getString(R.string.log)).decryptBoi();
+    private String url;
+    private String LOG_TAG;
     private BottomNavigationView navBar;
     private ProgressBar progressBar;
     private User user;
@@ -63,7 +63,8 @@ public class ContainerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        showProgress();
+        LOG_TAG =  new GimmeString(getString(R.string.log)).decryptBoi();
+        url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
         Knight knight = new Knight();
         if(!knight.isLegitDevice()){
             Intent home = new Intent(Intent.ACTION_MAIN);
@@ -74,6 +75,7 @@ public class ContainerFragment extends Fragment {
         }
         navBar = view.findViewById(R.id.nav_bar);
         progressBar = view.findViewById(R.id.progress);
+        showProgress();
         navBar.setOnNavigationItemSelectedListener(menuItem -> {
             switch (menuItem.getItemId()){
                 case (R.id.password):

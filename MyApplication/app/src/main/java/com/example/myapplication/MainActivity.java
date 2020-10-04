@@ -24,16 +24,19 @@ public class MainActivity extends AppCompatActivity{
 
     private WelcomeFragment welcomeFragment;
 
-    private final String DEFAULT_URL = new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi();
+    private String DEFAULT_URL;
 
-    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
+    private String LOG_TAG;
 
-    private URI defaultUri = URI.create(DEFAULT_URL);
+    private URI defaultUri; ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        DEFAULT_URL = new GimmeString(getApplicationContext().getString(R.string.url)).decryptBoi();
+        LOG_TAG =  new GimmeString(getString(R.string.log)).decryptBoi();
+        defaultUri = URI.create(DEFAULT_URL);
         setContentView(R.layout.activity_main);
         cookieBoi = new CookieBoi(getApplicationContext());
         isStoragePermissionGranted();

@@ -41,8 +41,6 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 public class AccountFragment extends Fragment {
-    private final String LOG_TAG =  new GimmeString(getString(R.string.log)).decryptBoi();
-    private final String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
     private Button change,logout;
     private User user;
     public AccountFragment(User user){
@@ -57,6 +55,7 @@ public class AccountFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
         change = view.findViewById(R.id.change);
         logout = view.findViewById(R.id.logout);
         change.setOnClickListener(view1 -> {

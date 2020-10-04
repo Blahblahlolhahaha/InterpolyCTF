@@ -11,15 +11,15 @@ public class Knight {
         return legit;
     }
     private boolean checkPath(){
-        for(String pathDir: System.getenv("Path").split(":")){
+        for(String pathDir: System.getenv("PATH").split(":")){
             if(new File(pathDir,"su").exists()){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
     private boolean checkEmulator(){
-        return Build.BRAND.equals("generic")
+        return !( Build.BRAND.equals("generic")
                 || Build.DEVICE.equals("generic")
                 || Build.FINGERPRINT.equals("generic")
                 || Build.HARDWARE.equals("goldfish")
@@ -28,6 +28,6 @@ public class Knight {
                 || Build.MANUFACTURER.equals("unknown")
                 || Build.PRODUCT.equals("sdk")
                 || Build.MODEL.equals("sdk")
-                || Build.USER.equals("android-build");
+                || Build.USER.equals("android-build"));
     }
 }

@@ -49,7 +49,7 @@ public class EditFragment extends Fragment {
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
     private Button cancel,delete,save;
-    private final String url = "/password";
+
     public EditFragment(User user){
         this.user = user;
     }
@@ -81,6 +81,7 @@ public class EditFragment extends Fragment {
         delete = view.findViewById(R.id.delete);
         ClipboardManager clipboard = (ClipboardManager)
                 getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        final String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
         if(passwordItem != null){
             urlEditText.setText(passwordItem.getUrl());
             username.setText(passwordItem.getUsername());

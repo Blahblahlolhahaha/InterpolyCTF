@@ -37,7 +37,7 @@ import java.util.concurrent.ExecutionException;
 public class AntivirusFragment extends Fragment{
     private Button button;
     private TextView lastScan,progress;
-    private final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
+    private String LOG_TAG;
     private final String workName = "woohoooo";
     private SharedPreferences sharedPref;
     private Handler handler;
@@ -49,6 +49,7 @@ public class AntivirusFragment extends Fragment{
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        LOG_TAG =  new GimmeString(getString(R.string.log)).decryptBoi();
         sharedPref = view.getContext().getSharedPreferences("Last Scan",0);
         lastScan = view.findViewById(R.id.last_scan);
         button = view.findViewById(R.id.scan);

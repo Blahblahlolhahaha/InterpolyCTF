@@ -1,14 +1,11 @@
 package com.example.myapplication.workers;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.example.myapplication.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +14,6 @@ import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class YeetRequest extends JsonObjectRequest {
 

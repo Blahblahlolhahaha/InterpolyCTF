@@ -28,8 +28,6 @@ import org.json.JSONObject;
 
 import java.net.HttpCookie;
 import java.net.URI;
-import java.util.Arrays;
-import java.util.Objects;
 
 public class RegisterFragment extends Fragment {
     EditText usernameEditText,passwordEditText,confirmEditText;

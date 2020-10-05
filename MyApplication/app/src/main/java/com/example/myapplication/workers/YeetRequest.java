@@ -1,7 +1,5 @@
 package com.example.myapplication.workers;
 
-import android.util.Log;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
@@ -16,10 +14,9 @@ import java.net.HttpCookie;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class YeetRequest extends JsonObjectRequest {
-    private final String LOG_TAG = "NUMBAH 1:";
+
     private final String SET_COOKIE_KEY = "Set-cookie";
     // Since we're extending a Request class
     // we just use its constructor
@@ -59,7 +56,7 @@ public class YeetRequest extends JsonObjectRequest {
             }
             return Response.success(jsonResponse, HttpHeaderParser.parseCacheHeaders(response));
         } catch (JSONException e) {
-           Log.e(LOG_TAG, Objects.requireNonNull(e.getMessage()));
+            e.printStackTrace();
            return Response.error(new ParseError(e));
         }
     }

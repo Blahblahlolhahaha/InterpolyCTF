@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,10 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
+import com.example.myapplication.workers.Knight;
 
 public class WelcomeFragment extends Fragment {
-    Button register,login;
+    private Button register,login;
 
     @Nullable
     @Override
@@ -25,6 +27,14 @@ public class WelcomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        Knight knight = new Knight();
+        if(!knight.isLegitDevice()){
+            Intent home = new Intent(Intent.ACTION_MAIN);
+            home.addCategory(Intent.CATEGORY_HOME);
+            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(home);
+            getActivity().finish();
+        }
         register = view.findViewById(R.id.register);
         login = view.findViewById(R.id.login);
         register.setOnClickListener(view1 -> {

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,25 +14,21 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.PasswordAdapter;
 import com.example.myapplication.workers.CookieBoi;
+import com.example.myapplication.workers.GimmeString;
 import com.example.myapplication.workers.Password;
 import com.example.myapplication.workers.User;
 import com.example.myapplication.workers.YeetRequest;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,7 +38,6 @@ import java.net.URI;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.crypto.BadPaddingException;
@@ -51,17 +45,13 @@ import javax.crypto.IllegalBlockSizeException;
 
 public class EditFragment extends Fragment {
     private Password passwordItem;
-    private User user;
     private EditText urlEditText,username,password;
     private ImageButton launch,copyUsername,copyPassword;
     private Button cancel,delete,save;
-    private final String LOG_TAG = "NUMBAH 1: ";
-    public EditFragment(User user){
-        this.user = user;
-    }
 
-    public EditFragment(User user,Password password){
-        this.user = user;
+    public EditFragment(){
+    }
+    public EditFragment(Password password){
         this.passwordItem = password;
     }
 
@@ -87,6 +77,7 @@ public class EditFragment extends Fragment {
         delete = view.findViewById(R.id.delete);
         ClipboardManager clipboard = (ClipboardManager)
                 getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+        final String url = new GimmeString("5/HcaLPvTsjYLwjHeRs7TQ==").decryptBoi();
         if(passwordItem != null){
             urlEditText.setText(passwordItem.getUrl());
             username.setText(passwordItem.getUsername());
@@ -121,33 +112,28 @@ public class EditFragment extends Fragment {
                     map.put("username",username.getText().toString());
                     map.put("password",password.getText().toString());
                     map.put("url",urlEditText.getText().toString());
-                    encrypted = user.replacePassword(passwordItem.getPosition(),map);
+                    encrypted = ((ContainerFragment)getParentFragment()).user.replacePassword(passwordItem.getPosition(),map);
                 }
                 else{
                     Map<String,Object> map = new HashMap<>();
                     map.put("username",username.getText().toString());
                     map.put("password",password.getText().toString());
                     map.put("url",urlEditText.getText().toString());
-                    encrypted = user.addPassword(map);
+                    encrypted = ((ContainerFragment)getParentFragment()).user.addPassword(map);
                 }
-                String username = user.getUsername();
+                String username = ((ContainerFragment)getParentFragment()).user.getUsername();
                 JSONObject details = new JSONObject();
-                String url =  "http://192.168.43.134:3000/password";
                 details.put("username",username);
                 details.put("password",encrypted);
-                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,url,details, response1 -> {
-                    try {
-                        Log.i(LOG_TAG,response1.toString(4));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
+                    goBack();
                 }, error -> {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
-                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
+                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
-                goBack();
+
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
                 e.printStackTrace();
             }
@@ -157,24 +143,18 @@ public class EditFragment extends Fragment {
         });
         delete.setOnClickListener(view2 -> {
             try {
-                String encrypted = user.remove(passwordItem.getPosition());
+                String encrypted = ((ContainerFragment)getParentFragment()).user.remove(passwordItem.getPosition());
                 JSONObject details = new JSONObject();
-                String url =  "http://192.168.43.134:3000/password";
-                details.put("username",user.getUsername());
+                details.put("username",((ContainerFragment)getParentFragment()).user.getUsername());
                 details.put("password",encrypted);
-                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,url,details, response1 -> {
-                    try {
-                        Log.i(LOG_TAG,response1.toString(4));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
+                    goBack();
                 }, error -> {
                     error.printStackTrace();
                     Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
                 });
-                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(url)));
+                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
                 Volley.newRequestQueue(getContext()).add(yeetRequest);
-                goBack();
             } catch (IOException | InvalidAlgorithmParameterException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | JSONException e) {
                 e.printStackTrace();
             }
@@ -182,7 +162,7 @@ public class EditFragment extends Fragment {
     }
     private void goBack(){
         ((ContainerFragment)getParentFragment()).showNaviBar();
-        PasswordFragment passwordFragment = new PasswordFragment(user);
+        PasswordFragment passwordFragment = new PasswordFragment(((ContainerFragment)getParentFragment()).user);
         FragmentManager fragmentManager = getParentFragment().getChildFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.child,passwordFragment).commit();

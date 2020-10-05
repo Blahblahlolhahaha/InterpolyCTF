@@ -53,7 +53,7 @@ public class PasswordAdapter extends RecyclerView.Adapter<PasswordAdapter.Passwo
         usernameView.setText(usename);
         holder.cardView.setOnClickListener(view -> {
             Password password1 = new Password(url,usename,password,position);
-            EditFragment editFragment = new EditFragment(user,password1);
+            EditFragment editFragment = new EditFragment(password1);
             FragmentManager fragmentManager  = containerFragment.getChildFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.child,editFragment).commit();

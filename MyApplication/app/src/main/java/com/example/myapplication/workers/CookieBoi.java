@@ -34,11 +34,11 @@ public class CookieBoi implements CookieStore {
 
     public CookieBoi(Context context){
         LOG_TAG = new GimmeString(context.getString(R.string.log)).decryptBoi();
-        storedDomains = new ArrayList<String>();
+        storedDomains = new ArrayList<>();
         cookiePref = context.getSharedPreferences(COOKIESPREF,0);
         String domains = cookiePref.getString(COOKIES_URI_STORE,null);
         if(domains !=null){
-            storedDomains = Arrays.asList(domains.split(","));
+            storedDomains = new ArrayList<>(Arrays.asList(domains.split(",")));
             for (String domain:storedDomains) {
                 String names = cookiePref.getString(COOKIESPREF + "_" + domains,null);
                 if(names != null){

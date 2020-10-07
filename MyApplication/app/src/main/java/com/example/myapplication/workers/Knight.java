@@ -7,7 +7,7 @@ import java.io.File;
 public class Knight {
     private boolean legit;
     public boolean isLegitDevice(){
-        legit = checkPath() || checkEmulator();
+        legit = checkPath() && checkEmulator();
         return legit;
     }
     private boolean checkPath(){

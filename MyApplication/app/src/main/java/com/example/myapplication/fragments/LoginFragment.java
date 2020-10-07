@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
         final String LOG_TAG = new GimmeString(getString(R.string.log)).decryptBoi();
         login.setOnClickListener(view12 -> {
             try {
-                url = "/login";
+                url = new GimmeString(getString(R.string.url)).decryptBoi() + "/login";
                 username = usernameEditText.getText().toString();
                 password = passwordEditText.getText().toString();
                 if(username.equals("")){
@@ -63,7 +63,7 @@ public class LoginFragment extends Fragment {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("username",username);
                 jsonObject.put("password",password);
-                YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, new GimmeString(getString(R.string.url)).decryptBoi() +  url, jsonObject, response -> {
+                YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST,   url, jsonObject, response -> {
                     try {
                         Log.i(LOG_TAG,"Login Successful!");
                         String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
@@ -77,17 +77,23 @@ public class LoginFragment extends Fragment {
                     }
                 }, error -> {
                     try {
-                        JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
-                        String e;
-                        if(jsonObject1.getString("message").equals("Invalid Login!")){
-                            e = "Wrong username/password (；￣Д￣）!";
+                        if(error.networkResponse !=  null){
+                            JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
+                            String e;
+                            if(jsonObject1.getString("message").equals("Invalid Login!")){
+                                e = "Wrong username/password (；￣Д￣）!";
 
+                            }
+                            else{
+                                e = "An error occurred T.T!";
+                            }
+                            Log.e(LOG_TAG, "User screwed up!");
+                            Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            e = "An error occurred T.T!";
+                            Toast.makeText(getContext(),"Check your internet connection and try again! T.T",Toast.LENGTH_SHORT).show();
                         }
-                        Log.e(LOG_TAG, "User screwed up!");
-                        Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
+
 
                     } catch (JSONException e) {
                         e.printStackTrace();

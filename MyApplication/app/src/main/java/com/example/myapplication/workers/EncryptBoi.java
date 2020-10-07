@@ -73,7 +73,7 @@ public class EncryptBoi {
                     }
                 }
             }catch(Exception e){
-                e.printStackTrace();
+               e.getMessage();
             }
 
             return bytes;
@@ -90,6 +90,7 @@ public class EncryptBoi {
         }
         fis.close();
         fos.close();
+        file.delete();
     }
     private static byte right(byte boom,int i){
         return (byte) (boom >>> i | boom << (Integer.SIZE - i));

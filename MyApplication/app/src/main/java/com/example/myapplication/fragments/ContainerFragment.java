@@ -20,17 +20,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
-import com.example.myapplication.adapters.PasswordAdapter;
-import com.example.myapplication.workers.CookieBoi;
-import com.example.myapplication.workers.GimmeString;
-import com.example.myapplication.workers.Knight;
-import com.example.myapplication.workers.User;
-import com.example.myapplication.workers.YeetRequest;
+import com.example.myapplication.b.CookieBoi;
+import com.example.myapplication.b.GimmeString;
+import com.example.myapplication.b.Knight;
+import com.example.myapplication.b.User;
+import com.example.myapplication.b.YeetRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;

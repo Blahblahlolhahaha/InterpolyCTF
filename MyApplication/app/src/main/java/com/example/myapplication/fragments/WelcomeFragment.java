@@ -14,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
-import com.example.myapplication.workers.Knight;
+import com.example.myapplication.b.Knight;
 
 public class WelcomeFragment extends Fragment {
     private Button register,login;

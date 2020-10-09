@@ -24,8 +24,8 @@ import androidx.work.WorkManager;
 import androidx.work.WorkQuery;
 
 import com.example.myapplication.R;
-import com.example.myapplication.workers.GimmeString;
-import com.example.myapplication.workers.a;
+import com.example.myapplication.b.GimmeString;
+import com.example.myapplication.b.a;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Collections;

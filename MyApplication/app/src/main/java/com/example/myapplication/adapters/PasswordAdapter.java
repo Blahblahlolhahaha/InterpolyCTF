@@ -1,15 +1,11 @@
 package com.example.myapplication.adapters;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.EditFragment;
-import com.example.myapplication.workers.Password;
-import com.example.myapplication.workers.User;
+import com.example.myapplication.b.Password;
+import com.example.myapplication.b.User;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 

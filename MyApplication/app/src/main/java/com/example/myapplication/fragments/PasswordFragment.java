@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapters.PasswordAdapter;
-import com.example.myapplication.workers.User;
+import com.example.myapplication.b.User;
 
 public class PasswordFragment extends Fragment {
     private User user;

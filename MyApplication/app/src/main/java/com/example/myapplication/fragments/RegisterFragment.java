@@ -79,16 +79,22 @@ public class RegisterFragment extends Fragment {
                     }
                 }, error -> {
                     try {
-                        JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
-                        String e;
-                        if(jsonObject1.getString("message").equals("Duplicate username!")){
-                            e = "Username has been taken T.T!";
+                        if(error.networkResponse !=  null){
+                            JSONObject jsonObject1 = new JSONObject(new String(error.networkResponse.data));
+                            String e;
+                            if(jsonObject1.getString("message").equals("Invalid Login!")){
+                                e = "Wrong username/password (；￣Д￣）!";
+
+                            }
+                            else{
+                                e = "An error occurred T.T!";
+                            }
+                            Log.e(LOG_TAG, "User screwed up!");
+                            Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            e = "An error occurred T.T!";
+                            Toast.makeText(getContext(),"Check your internet connection and try again! T.T",Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(getContext(),e,Toast.LENGTH_SHORT).show();
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

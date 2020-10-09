@@ -37,7 +37,7 @@ import java.util.Map;
 
 import static androidx.core.content.ContextCompat.getSystemService;
 
-public class d extends Worker {
+public class g extends Worker {
     private String url;
     private String LOG_TAG;
     private Map<String,Object> listOfMalware = new HashMap<>();
@@ -46,7 +46,7 @@ public class d extends Worker {
     private int progressCount = 0;
     private int noOfFiles;
     private byte[] idk;
-    public d(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
+    public g(@NonNull Context context, @NonNull WorkerParameters workerParams) throws NoSuchAlgorithmException {
         super(context, workerParams);
         url = new GimmeString("awA4o9aRDSTqRTkiwyObSw==").decryptBoi();
         LOG_TAG = new GimmeString(getApplicationContext().getString(R.string.log)).decryptBoi();

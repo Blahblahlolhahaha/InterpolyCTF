@@ -25,7 +25,7 @@ import androidx.work.WorkQuery;
 
 import com.example.myapplication.R;
 import com.example.myapplication.b.GimmeString;
-import com.example.myapplication.b.d;
+import com.example.myapplication.b.g;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.Collections;
@@ -72,7 +72,7 @@ public class AntivirusFragment extends Fragment{
                         if (isAntivirusRunning()) {
                             Toast.makeText(getContext(), "A scan is running already! Don't overwork me T.T", Toast.LENGTH_SHORT).show();
                         } else {
-                            workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(d.class).build());
+                            workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(g.class).build());
                             Toast.makeText(getContext(), "Scan started! Check your notification bar for status!", Toast.LENGTH_SHORT).show();
                             lastScan.setVisibility(View.GONE);
                             button.setVisibility(View.GONE);
@@ -102,7 +102,7 @@ public class AntivirusFragment extends Fragment{
                 if (isAntivirusRunning()) {
                     Toast.makeText(getContext(), "A scan is running already! Don't overwork me T.T", Toast.LENGTH_SHORT).show();
                 } else {
-                    workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(d.class).build());
+                    workManager.enqueueUniqueWork(workName, ExistingWorkPolicy.KEEP, new OneTimeWorkRequest.Builder(g.class).build());
                     Toast.makeText(getContext(), "Scan started! Check your notification bar for status!", Toast.LENGTH_SHORT).show();
                     while(!isAntivirusRunning()){
                         Log.i(LOG_TAG,"Waiting for antivirus to start");

@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.WelcomeFragment;
-import com.example.myapplication.b.CookieBoi;
-import com.example.myapplication.b.GimmeString;
+import com.example.myapplication.d.CookieBoi;
+import com.example.myapplication.d.GimmeString;
 
 import java.net.URI;
 

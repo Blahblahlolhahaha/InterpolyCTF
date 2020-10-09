@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.fragments.ContainerFragment;
 import com.example.myapplication.fragments.EditFragment;
-import com.example.myapplication.b.Password;
-import com.example.myapplication.b.User;
+import com.example.myapplication.d.Password;
+import com.example.myapplication.d.User;
 
 import java.util.List;
 import java.util.Map;

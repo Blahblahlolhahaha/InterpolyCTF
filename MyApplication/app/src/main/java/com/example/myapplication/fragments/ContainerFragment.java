@@ -24,11 +24,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.myapplication.R;
-import com.example.myapplication.b.CookieBoi;
-import com.example.myapplication.b.GimmeString;
-import com.example.myapplication.b.Knight;
-import com.example.myapplication.b.User;
-import com.example.myapplication.b.YeetRequest;
+import com.example.myapplication.d.CookieBoi;
+import com.example.myapplication.d.GimmeString;
+import com.example.myapplication.d.Knight;
+import com.example.myapplication.d.User;
+import com.example.myapplication.d.YeetRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONException;

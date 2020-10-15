@@ -11,6 +11,7 @@ app.use(cookieParser("r64fKfinOwmeo@i84cd!knk$%vfvfd"));
 
 app.post("/login",async(req,res)=>{
     try{
+        console.log(req)
         const username = req.body.username;
         const password = req.body.password;
         const results = await users.login(username,password);
@@ -21,6 +22,7 @@ app.post("/login",async(req,res)=>{
             res.status(200).cookie("token",JSON.stringify({"username":username}),{maxAge:2147483647,signed: true,httpOnly:true}).send({"message":"yes"});
         }
     }catch(error){
+        console.log(error);
         res.status(500).send({"message":"Internal Server Error"});
     }
     

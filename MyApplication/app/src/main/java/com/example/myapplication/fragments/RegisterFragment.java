@@ -26,8 +26,10 @@ import com.example.myapplication.d.YeetRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.net.HttpCookie;
 import java.net.URI;
+import java.net.URLDecoder;
 
 public class RegisterFragment extends Fragment {
     private EditText usernameEditText,passwordEditText,confirmEditText;
@@ -68,13 +70,13 @@ public class RegisterFragment extends Fragment {
                 YeetRequest jsonObjectRequest = new YeetRequest(Request.Method.POST, new GimmeString(getString(R.string.url)).decryptBoi() +  url, jsonObject, response -> {
                     try {
                         Log.i(LOG_TAG,"Registration Successful!");
-                        String cookieString = response.getString("cookie");
+                        String cookieString = URLDecoder.decode(response.getString("cookie"),"utf-8");
                         HttpCookie cookie = HttpCookie.parse(cookieString).get(0);
                         CookieBoi cookieBoi = new CookieBoi(getContext());
                         cookieBoi.add(URI.create(new GimmeString(getString(R.string.url)).decryptBoi()),cookie);
                         ContainerFragment containerFragment = new ContainerFragment();
                         fragmentTransaction(containerFragment);
-                    } catch (JSONException e) {
+                    } catch (JSONException | UnsupportedEncodingException e) {
                         Log.e(LOG_TAG, "An error occured!\nError: ", e);
                     }
                 }, error -> {

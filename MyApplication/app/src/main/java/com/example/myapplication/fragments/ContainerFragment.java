@@ -1,5 +1,6 @@
 package com.example.myapplication.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
@@ -110,37 +111,39 @@ public class ContainerFragment extends Fragment {
 
                     AlertDialog dialog = builder.create();
                     dialog.setOnShowListener(dialogInterface -> {
-                        String passwordText = password.getText().toString();
-                        String confirmText = confirm.getText().toString();
-                        if(passwordText.equals(confirmText)){
-                            List<Map<String,Object>> passwordList = new ArrayList<>();
-                            CookieBoi cookieBoi = new CookieBoi(getContext());
-                            try {
-                                String username =  new JSONObject(cookieBoi.get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())).get(0).getValue()).getString("username");
-                                user = new User(username,passwordText,passwordList);
-                                String encrypted = user.encryptAndConvertToBase64();
-                                JSONObject details = new JSONObject();
-                                details.put("username",user.getUsername());
-                                details.put("password",encrypted);
-                                YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
-                                    hideProgress();
-                                    PasswordFragment passwordFragment = new PasswordFragment(user);
-                                    fragmentTransaction(passwordFragment);
-                                    view.setVisibility(View.VISIBLE);
-                                    dialog.dismiss();
-                                }, error -> {
-                                    error.printStackTrace();
-                                    Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
-                                });
-                                yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
-                                Volley.newRequestQueue(getContext()).add(yeetRequest);
-                            } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-                                e.printStackTrace();
+                        Button yes = dialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                        yes.setOnClickListener(view1 -> {
+                            String passwordText = password.getText().toString();
+                            String confirmText = confirm.getText().toString();
+                            if(passwordText.equals(confirmText)){
+                                List<Map<String,Object>> passwordList = new ArrayList<>();
+                                CookieBoi cookieBoi = new CookieBoi(getContext());
+                                try {
+                                    String username =  new JSONObject(cookieBoi.get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())).get(0).getValue().split("\\.")[0].split(":",2)[1]).getString("username");
+                                    user = new User(username,passwordText,passwordList);
+                                    String encrypted = user.encryptAndConvertToBase64();
+                                    JSONObject details = new JSONObject();
+                                    details.put("password",encrypted);
+                                    YeetRequest yeetRequest = new YeetRequest(JsonObjectRequest.Method.POST,new GimmeString(getString(R.string.url)).decryptBoi() + url,details, response1 -> {
+                                        hideProgress();
+                                        PasswordFragment passwordFragment = new PasswordFragment(user);
+                                        fragmentTransaction(passwordFragment);
+                                        view.setVisibility(View.VISIBLE);
+                                        dialog.dismiss();
+                                    }, error -> {
+                                        error.printStackTrace();
+                                        Toast.makeText(getContext(),"An error occured T.T",Toast.LENGTH_SHORT).show();
+                                    });
+                                    yeetRequest.setCookies(new CookieBoi(getContext()).get(URI.create(new GimmeString(getString(R.string.url)).decryptBoi())));
+                                    Volley.newRequestQueue(getContext()).add(yeetRequest);
+                                } catch (JSONException | NoSuchPaddingException | NoSuchAlgorithmException | IOException | InvalidAlgorithmParameterException | InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-                        else{
-                            Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
-                        }
+                            else{
+                                Toast.makeText(getContext(), "Passwords do not match!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     });
                     dialog.show();
                 }
